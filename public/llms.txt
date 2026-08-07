@@ -1,0 +1,42 @@
+# Gexus
+
+> Gexus is an AI native CAD platform. You describe the part you need in plain
+> language and Gexus returns a manufacturable design, with topology, stress
+> results and a machining plan attached.
+
+## What it does
+
+- Turns a written brief into real geometry. You state the loads, the material
+  and the envelope; Gexus proposes several designs and explains the tradeoff
+  behind each one.
+- Optimises topology against how the material actually behaves, not against a
+  visual style.
+- Runs stress analysis on the result so the numbers arrive with the shape.
+- Checks manufacturability against the processes and machines a team already
+  owns, covering machining, printing and moulding.
+- Learns from the designs a team ships, so later work benefits from earlier
+  work.
+
+## Who it is for
+
+Mechanical, aerospace, robotics and powertrain teams who need parts that have
+not been built before, and who care as much about whether a part can be made
+as about whether it looks right.
+
+## Product pillars
+
+- Engineering Intelligence: understands load paths, material behaviour and
+  failure modes.
+- Design Reasoning: weighs tradeoffs and commits to a choice.
+- Manufacturing Aware: proposes only geometry that can actually be produced.
+- Continuously Learning: improves with every design a team completes.
+
+## Workflow
+
+Concept, Design, Simulate, Manufacture, Validate. One continuous thread with
+no exports or rebuilds between stages.
+
+## Links
+
+- Home: https://gexus.ai
+- Early access: https://gexus.ai/#access

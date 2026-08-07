@@ -1,0 +1,385 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-page text-ink font-sans antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: #111111;
+    color: #ffffff;
+  }
+
+  :focus-visible {
+    outline: 2px solid #111111;
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  img,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+}
+
+@layer components {
+  .shell {
+    @apply mx-auto w-full max-w-shell px-4 sm:px-6;
+  }
+
+  /* The large rounded content panels each numbered section sits inside. The
+     ::before draws a faint metallic hairline along the top edge. */
+  .panel {
+    @apply relative rounded-card border border-line bg-surface;
+    box-shadow: 0 1px 2px rgba(17, 17, 17, 0.02);
+  }
+
+  .panel::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 1px;
+    border-radius: 24px 24px 0 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.9) 18%,
+      rgba(17, 17, 17, 0.14) 50%,
+      rgba(255, 255, 255, 0.9) 82%,
+      transparent 100%
+    );
+    pointer-events: none;
+  }
+
+  /* ---------------------------------------------------------------- *
+   * Metallic type.
+   *
+   * The ramp stays in the dark half of the scale so headings hold their
+   * contrast on white; the light bands read as reflections, not as the
+   * base colour. Solid ink is the fallback wherever background-clip on
+   * text is unavailable or would be lost (print, forced colours).
+   * ---------------------------------------------------------------- */
+  .chrome {
+    color: #111111;
+  }
+
+  @supports (-webkit-background-clip: text) or (background-clip: text) {
+    .chrome {
+      background-image: linear-gradient(
+        174deg,
+        #3a3b42 0%,
+        #101013 14%,
+        #55565e 30%,
+        #0c0c0f 44%,
+        #4a4b53 58%,
+        #101014 72%,
+        #5c5d65 86%,
+        #17171b 100%
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+
+  /* Light chrome, for use on dark surfaces only. */
+  .chrome-light {
+    color: #ffffff;
+  }
+
+  @supports (-webkit-background-clip: text) or (background-clip: text) {
+    .chrome-light {
+      background-image: linear-gradient(
+        168deg,
+        #ffffff 0%,
+        #c9cad1 22%,
+        #85868e 40%,
+        #f4f4f6 54%,
+        #74757d 72%,
+        #dcdce1 100%
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+
+  /* Brushed metal fill for the emblem plate and small chips. */
+  .metal-surface {
+    background-image: linear-gradient(
+      145deg,
+      #fbfbfc 0%,
+      #dedee2 20%,
+      #b9bac1 38%,
+      #f2f2f4 52%,
+      #a8a9b0 70%,
+      #e4e4e8 100%
+    );
+  }
+
+  /* A single hairline of polished metal, used under the nav and above the
+     footer bar. */
+  .metal-rule {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(17, 17, 17, 0.08) 20%,
+      rgba(17, 17, 17, 0.18) 50%,
+      rgba(17, 17, 17, 0.08) 80%,
+      transparent
+    );
+  }
+
+  /* Faint engineering grid behind the hero. */
+  .blueprint-grid {
+    background-image: linear-gradient(
+        to right,
+        rgba(17, 17, 17, 0.045) 1px,
+        transparent 1px
+      ),
+      linear-gradient(to bottom, rgba(17, 17, 17, 0.045) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .snap-row {
+    scroll-snap-type: x mandatory;
+  }
+  .snap-row > * {
+    scroll-snap-align: start;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Scroll reveals.
+ *
+ * Driven by one shared IntersectionObserver that toggles `.is-visible`.
+ * Everything else is CSS, so no animation library ships to the client.
+ * Text is present in the HTML either way; the noscript rule below makes
+ * sure it is also painted if scripting never runs.
+ * ------------------------------------------------------------------ */
+@layer utilities {
+  [data-reveal] {
+    opacity: 0;
+    transform: translate3d(0, var(--reveal-y, 26px), 0) scale(var(--reveal-s, 1));
+    transition:
+      opacity 1s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
+      transform 1.1s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+  }
+
+  [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+    will-change: auto;
+  }
+
+  /* Parent drives the stagger so children need no per element delay. */
+  [data-reveal-group] > * {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0);
+    transition:
+      opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  [data-reveal-group].is-visible > * {
+    opacity: 1;
+    transform: none;
+  }
+
+  [data-reveal-group].is-visible > *:nth-child(1) { transition-delay: 0ms; }
+  [data-reveal-group].is-visible > *:nth-child(2) { transition-delay: 90ms; }
+  [data-reveal-group].is-visible > *:nth-child(3) { transition-delay: 180ms; }
+  [data-reveal-group].is-visible > *:nth-child(4) { transition-delay: 270ms; }
+  [data-reveal-group].is-visible > *:nth-child(5) { transition-delay: 360ms; }
+  [data-reveal-group].is-visible > *:nth-child(n + 6) { transition-delay: 450ms; }
+
+  /* Hero elements animate on load rather than on scroll. */
+  .lift-in {
+    animation: lift-in 1.15s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: var(--lift-delay, 0ms);
+  }
+
+  .float-slow {
+    animation: float-slow 9s ease-in-out infinite;
+  }
+
+  .float-slower {
+    animation: float-slow 13s ease-in-out infinite;
+  }
+}
+
+@keyframes lift-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 26px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Animated metal, for the emblem in the closing section.
+ *
+ * Lengths are in SVG user units, which is what CSS transform px resolve to
+ * inside a viewBox. Each band sweeps then rests, so the metal catches the
+ * light periodically instead of strobing.
+ * ------------------------------------------------------------------ */
+.ge-sheen {
+  animation: ge-sweep 7s cubic-bezier(0.45, 0, 0.25, 1) infinite;
+}
+
+.ge-sheen-cool {
+  animation: ge-sweep-cool 11s cubic-bezier(0.4, 0, 0.3, 1) infinite;
+}
+
+.ge-shimmer {
+  animation: ge-drift 14s ease-in-out infinite;
+}
+
+.ge-plinth-sweep {
+  animation: ge-plinth 9s ease-in-out infinite;
+}
+
+.ge-bloom {
+  animation: ge-bloom 7s ease-in-out infinite;
+  opacity: 0;
+}
+
+@keyframes ge-sweep {
+  0% {
+    transform: translateX(0);
+  }
+  46%,
+  100% {
+    transform: translateX(760px);
+  }
+}
+
+@keyframes ge-sweep-cool {
+  0% {
+    transform: translateX(0);
+  }
+  62%,
+  100% {
+    transform: translateX(900px);
+  }
+}
+
+@keyframes ge-drift {
+  0%,
+  100% {
+    transform: translateX(-40px);
+  }
+  50% {
+    transform: translateX(40px);
+  }
+}
+
+@keyframes ge-plinth {
+  0%,
+  100% {
+    transform: translateX(-88px);
+  }
+  50% {
+    transform: translateX(88px);
+  }
+}
+
+@keyframes ge-bloom {
+  0%,
+  30% {
+    opacity: 0;
+  }
+  38% {
+    opacity: 0.5;
+  }
+  52%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -13px, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  [data-reveal],
+  [data-reveal-group] > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .lift-in,
+  .float-slow,
+  .float-slower,
+  .ge-sheen,
+  .ge-sheen-cool,
+  .ge-shimmer,
+  .ge-plinth-sweep,
+  .ge-bloom {
+    animation: none !important;
+  }
+
+  /* The bloom is only visible mid sweep, so with the sweep stopped it should
+     stay hidden rather than freeze at full strength. */
+  .ge-bloom {
+    opacity: 0 !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+@media print, (forced-colors: active) {
+  .chrome,
+  .chrome-light {
+    background-image: none;
+    color: currentColor;
+    -webkit-text-fill-color: currentColor;
+  }
+}
