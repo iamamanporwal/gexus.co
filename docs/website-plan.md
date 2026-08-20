@@ -4,9 +4,13 @@ Branch: `redesign/positioning-seo-cms`
 Audited against commit `e5ef825` (the vi3w.online code as imported)
 Date: 2026-08-20
 
-Every finding below was verified against the code, the build output, or the
-prerendered HTML. File references are `path:line`. IDs are stable so they can be
-quoted in commits and issues.
+73 findings, 5 critical. Every one was verified against the code, the build output,
+or the prerendered HTML. File references are `path:line`. IDs are stable so they
+can be quoted in commits and issues.
+
+One entry, S-11, was checked and cleared rather than fixed; it is kept in place so
+it is not raised again. The landing-page execution plan lives separately in
+[`landing-page-plan.md`](./landing-page-plan.md).
 
 ---
 
@@ -187,9 +191,11 @@ User Stories (section 6) before expanding the taxonomy.
 | S-06 | **No OG image at all.** Every share on LinkedIn, X, Slack and WhatsApp renders as bare text. | `app/layout.tsx:24-29` | High |
 | S-07 | No Twitter card metadata. | `app/layout.tsx:19` | Medium |
 | S-08 | **One route for the entire site.** No amount of on-page work lets a single URL rank for several intents. This is the ceiling. | `app/page.tsx` | Critical |
-| S-09 | **Four `<h1>` elements on one page** — the heading is rendered inside the sections loop, so every section emits an `h1`. One `h1`, the rest `h2`. | `components/ContentPanel.tsx:139` | High |
+| S-09 | **Three `<h1>` elements on one page** — the heading is rendered inside the sections loop, so every section with a title emits an `h1`: "3D in 3 Clicks.", "No More Mouse Marathon", "Your Ideas to Reality, Faster!". One `h1`, the rest `h2`. | `components/ContentPanel.tsx:139` | High |
+| S-20 | **There is no footer.** No footer component exists anywhere in the codebase, so the site has no legal links, no contact, no navigation for crawlers to follow, and no place for the trust signals a B2B design tool is judged on. | — | High |
+| S-21 | **Zero internal links on the entire site.** Every `href` is outbound (a16z, Discord, the app subdomain). Nothing links to another page, so there is no internal link graph at all — which also means the nine new routes will launch orphaned unless this is fixed with them. | `components/`, `app/` | High |
 | S-10 | No structured data. No `Organization`, no `SoftwareApplication`, no `FAQPage`. This is the cheapest available win for AI-search surfaces. | — | High |
-| S-11 | **Key copy is missing from the prerendered HTML.** Verified by extracting text from `.next/server/app/index.html`: it runs `02 Problem` straight to `04 Usecase`. The entire Product section and the "Ship Games 10X Faster" CTA are absent, because both are `dynamic()` imports. Crawlers never see the product pitch or the primary CTA. | `components/ContentPanel.tsx:13-22` | Critical |
+| S-11 | ~~Key copy missing from the prerendered HTML.~~ **Checked and cleared, 2026-08-20.** An earlier read of this was wrong. `next/dynamic` server-renders by default in the App Router, so the `dynamic()` sections are prerendered normally: `Create the things`, `Ship Games 10X Faster`, all three deck card summaries and the retro-card copy are all present in `.next/server/app/index.html`. Recorded here so it is not raised again. | `components/ContentPanel.tsx:13-22` | Not an issue |
 | S-12 | `html, body { overflow: hidden }` plus a fixed scroll container means there is no document scroll. Breaks in-page anchors, scroll-to-text-fragment, reader modes and "jump to" search features. | `app/globals.css:18`, `app/page.tsx:23` | High |
 | S-13 | No custom 404 page; the default `_not-found` ships. | — | Low |
 | S-14 | **The PWA manifest is broken.** Both icon entries point at `/pwa-icon.png`, which does not exist in `public/`. No `start_url`, `scope`, `id` or maskable icon. | `public/manifest.json` | Medium |
@@ -481,7 +487,8 @@ The structural change everything else depends on.
 - One `h1` per page, carrying that route's primary intent (S-09)
 - Convert the copy sections to server components; keep `"use client"` only where
   there is real interaction (P-08)
-- Stop hiding the product pitch and the primary CTA behind `dynamic()` (S-11)
+- S-20, S-21 build a real footer and an internal link graph, so the new routes do
+  not launch orphaned
 - Add `Organization` and `SoftwareApplication` JSON-LD (S-10)
 - Add a real 404 (S-13)
 
