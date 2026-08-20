@@ -1,4 +1,4 @@
-# Vi3W website: audit and rebuild plan
+# Gexus website: audit and rebuild plan
 
 Branch: `redesign/positioning-seo-cms`
 Audited against commit `e5ef825` (the vi3w.online code as imported)
@@ -10,15 +10,72 @@ quoted in commits and issues.
 
 ---
 
+## Phase 0 decisions (locked 2026-08-20)
+
+| Decision | Answer |
+|----------|--------|
+| **Brand** | **Gexus.** The imported code is Vi3W-branded throughout, so this is a rebrand, not a casing cleanup. |
+| **Canonical domain** | **`gexus.co`.** `gexus.in` 301-redirects into it. Only `gexus.co` goes in Search Console. |
+| **Product** | A design tool for product designers and for UI/UX on hardware, aimed specifically at consumer electronics and concept design. |
+| **Capabilities** | Industrial Design, Product Visualization, Prototyping, User Experience Design |
+| **Industries** | Consumer Electronics, Furniture, Automotive, Fashion, Toys |
+| **Route depth** | 9 pages: 4 capability + 5 industry. Not the 20-way cross. |
+| **Tagline** | Keep **"3D in 3 Clicks"** — with the `Cilcks` typo fixed (N-01). |
+| **Social properties** | Being renamed to Gexus; URLs to follow. Until then they live behind one config object so swapping them is a one-line change. |
+
+### Working positioning sentence
+
+Drafted from the answers above, for phase 3 to derive headlines from:
+
+> Gexus is a browser-based design tool for product teams: industrial design,
+> visualization, prototyping and hardware UX in one place, built for the people
+> shaping consumer electronics.
+
+One note on the tagline: "3D in 3 Clicks" carries ease and speed, which lands
+well on the home page and on concept design. It undersells precision on the
+Prototyping and Industrial Design pages, so let those pages carry their own
+headlines rather than repeating it.
+
+### Rebrand scope
+
+Measured: **32 `Vi3W` occurrences across 11 files**, plus six external URLs
+pointing at Vi3W properties.
+
+| Files with Vi3W strings | Count |
+|---|---|
+| `components/Navigation.tsx` | 7 |
+| `public/sitemap.xml` | 5 |
+| `app/layout.tsx` | 5 |
+| `public/llms.txt` | 4 |
+| `public/humans.txt` | 3 |
+| `public/manifest.json` | 2 |
+| `lib/data.ts` | 2 |
+| `public/robots.txt` | 1 |
+| `package.json` | 1 |
+| `components/VideoEmbed.tsx` | 1 |
+| `components/ReleaseOverlay.tsx` | 1 |
+
+External URLs needing Gexus equivalents: `app.vi3w.in`, `discord.gg/TTWcRfvM9z`,
+`discord.com/invite/TTWcRfvM9z`, `github.com/iamamanporwal/VI3W3D`,
+`wellfound.com/company/vi3w-1`, and the YouTube embed `oGOkx7cuwvo`.
+
+Do this as **one `lib/site.ts` config object** that every component reads, not a
+find-and-replace. The current code hardcodes the same domain in eleven places,
+which is exactly how it ended up with three of them.
+
+---
+
 ## 0. The short version
 
 Four things are wrong at the same time, and they compound:
 
 1. **The product the site sells is not the product being built.** Every headline,
-   keyword and CTA sells game-asset generation. The product is browser-based 3D
-   product design software. The primary CTA literally reads "Ship Games 10X Faster".
-2. **The site has three identities.** `vi3w.online`, `vi3w.in` and `gexus.co` all
-   appear as the canonical home, across metadata, sitemap, robots and nav links.
+   keyword and CTA sells game-asset generation. The product is a browser-based
+   design tool for product designers and hardware UX, aimed at consumer
+   electronics. The primary CTA literally reads "Ship Games 10X Faster".
+2. **The site is branded for the wrong company.** The brand is Gexus; the code
+   says Vi3W in 32 places across 11 files, and three different domains
+   (`vi3w.online`, `vi3w.in`, `gexus.co`) each claim to be the canonical home.
    Search engines are being given contradictory instructions.
 3. **There is exactly one indexable URL.** The whole site is one scroll-jacked
    `/`. It cannot rank for more than one intent, and the sitemap advertises four
@@ -39,8 +96,8 @@ downstream of changing that.
 | ID | Issue | Where | Severity |
 |----|-------|-------|----------|
 | N-01 | **Typo in the page title: "3D in 3 Cilcks".** This is the `<title>` and the OpenGraph title, so it is the text in every search result and every shared link. | `app/layout.tsx:20`, `app/layout.tsx:25` | Critical |
-| N-02 | **Three conflicting domains.** `vi3w.online` in the OG url and package name; `vi3w.in` in robots, sitemap, llms.txt, humans.txt and every nav link; `gexus.co` as the git remote. | `app/layout.tsx:28`, `package.json:2`, `public/robots.txt:29`, `public/sitemap.xml`, `public/llms.txt:24`, `public/humans.txt:19`, `components/Navigation.tsx:12,53,54` | Critical |
-| N-03 | **Brand lockup is inconsistent**: `Vi3W`, `VI3W`, `vi3w` and `Vi3W Tech` all ship. Pick one written form and one casing rule. | `lib/data.ts:6,9`, `components/Navigation.tsx:33`, `public/humans.txt:6` | High |
+| N-02 | **Three conflicting domains.** `vi3w.online` in the OG url and package name; `vi3w.in` in robots, sitemap, llms.txt, humans.txt and every nav link; `gexus.co` as the git remote. **Resolved: `gexus.co` is canonical, `gexus.in` 301s into it.** | `app/layout.tsx:28`, `package.json:2`, `public/robots.txt:29`, `public/sitemap.xml`, `public/llms.txt:24`, `public/humans.txt:19`, `components/Navigation.tsx:12,53,54` | Critical |
+| N-03 | **The whole site is branded Vi3W, and the brand is Gexus.** 32 occurrences across 11 files, plus six external URLs pointing at Vi3W properties. Supersedes the original "pick one casing" reading of this finding. See the rebrand scope table above. | 11 files, see scope table | Critical |
 | N-04 | Nav "Home" points to an absolute external URL with a mixed-case host (`https://www.Vi3W.in`) instead of `/`. Costs a full page load to go home, and hosts are case-sensitive on some CDNs. | `components/Navigation.tsx:12` | High |
 | N-05 | A personal Gmail address is published as the company contact. | `public/humans.txt:4` | Medium |
 | N-06 | The GitHub link targets a repo named `VI3W3D`; confirm that is the intended public repo. | `components/Navigation.tsx:13` | Low |
@@ -85,20 +142,36 @@ git show 255fe8b:lib/site.ts
 
 Treat it as a copy deck to draw from rather than starting from a blank page.
 
-### Keyword targets for the new positioning
+### The locked audience
 
-The current site targets "text to 3D" and "AI 3D generation", which puts it in a
-crowded game-asset market. Product design intent looks different:
+Product designers, and UI/UX designers working on hardware — specifically
+consumer electronics and concept design. Not game developers, and not the
+generic "3D artist" market the current copy chases.
 
-- browser based 3D product design
-- online CAD alternative / CAD in the browser
-- AI industrial design tool
-- concept modelling in the browser
-- product design software with no install
-- 3D design software that runs in a browser
+### Keyword targets, mapped to routes
 
-Those are page-level intents, which is the argument for section 3: each one wants
-its own URL.
+The current site targets "text to 3D" and "AI 3D generation", which competes in a
+crowded game-asset market against far larger budgets. The locked taxonomy is a
+better keyword map because each cell is a real, separable search intent:
+
+| Route | Primary intent |
+|-------|----------------|
+| `/` | browser based product design software · 3D design in the browser |
+| `/industrial-design` | industrial design software online · industrial design tool |
+| `/product-visualization` | product visualization software · product rendering in browser |
+| `/prototyping` | digital prototyping tool · rapid prototyping software |
+| `/ux-design` | hardware UX design tool · device UI design software |
+| `/for/consumer-electronics` | consumer electronics design software · device concept design |
+| `/for/furniture` | furniture design software online |
+| `/for/automotive` | automotive concept design tool |
+| `/for/fashion` | 3D fashion design software |
+| `/for/toys` | toy design software |
+
+Nine pages plus the home page, not the 20-way capability x industry cross. Twenty
+pages of near-identical copy is the doorway-page pattern Google demotes, and it is
+more copy than can be written well in one pass. Add crossed pages later only where
+a real customer story justifies one — which is a further argument for building
+User Stories (section 6) before expanding the taxonomy.
 
 ---
 
@@ -363,23 +436,25 @@ launches slip. Stories are additive and low risk; the homepage is neither.
 
 ## 7. The plan
 
-### Phase 0. Decide (blocking, no code)
+### Phase 0. Decide — DONE (2026-08-20)
 
-Three answers, none of which are engineering:
+Answers are in the decisions table at the top of this document: brand is Gexus,
+canonical is `gexus.co`, nine routes, tagline stays "3D in 3 Clicks".
 
-1. **Canonical domain.** One origin, forever.
-2. **Brand lockup.** One spelling, one casing.
-3. **Positioning sentence.** One sentence naming who it is for and what it
-   replaces. Every headline in phase 3 derives from it.
-
-Nothing else starts cleanly until these exist.
+One item still open, and it does not block phase 1: the Gexus social and app URLs
+are being renamed and will land later. Build them as fields in `lib/site.ts` with
+the Vi3W values removed, so filling them in is one commit touching one file.
 
 ### Phase 1. Stop the bleeding (about half a day)
 
 Small, safe, independently shippable, disproportionately valuable.
 
 - N-01 fix "Cilcks" — one word, the largest single SEO return on this list
-- N-02 one `siteConfig` constant; every URL derives from it
+- N-03 **the Vi3W to Gexus rebrand**: 32 strings across 11 files, plus the six
+  external URLs. Do it by introducing `lib/site.ts` and having every component
+  read from it, so the domain exists in exactly one place afterwards
+- N-02 canonical `gexus.co`; configure the `gexus.in` 301 at the DNS or Vercel
+  level, not in application code
 - S-04, S-05 `metadataBase` and canonical
 - S-06, S-07 OG image and Twitter card
 - S-01, S-02, S-03 delete the static sitemap and robots; add `app/sitemap.ts` and
@@ -399,10 +474,11 @@ The structural change everything else depends on.
 
 - Remove `overflow: hidden` and the fixed scroll container; move to normal
   document flow (S-12, R-09)
-- Split the deck into real routes. Suggested: `/` keeps the hero and the pitch;
-  `/product`, `/use-cases` and `/pricing` become real pages, which also makes the
-  existing sitemap honest
-- One `h1` per page (S-09)
+- S-08 split the deck into the nine locked routes — `/industrial-design`,
+  `/product-visualization`, `/prototyping`, `/ux-design`, and
+  `/for/{consumer-electronics,furniture,automotive,fashion,toys}` — with `/`
+  keeping the hero and the pitch. Route-to-intent table is in section 2
+- One `h1` per page, carrying that route's primary intent (S-09)
 - Convert the copy sections to server components; keep `"use client"` only where
   there is real interaction (P-08)
 - Stop hiding the product pitch and the primary CTA behind `dynamic()` (S-11)
