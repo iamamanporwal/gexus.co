@@ -9,7 +9,7 @@ export default function ReleaseOverlay() {
         <div className="flex flex-col items-center justify-center text-center w-full h-full">
             <div className="relative z-50 flex flex-col items-center gap-8 pointer-events-auto">
                 <h2 className="text-white text-4xl md:text-6xl font-sans tracking-tight font-medium max-w-4xl px-4 text-center leading-tight">
-                    Ship Games 10X Faster
+                    Ship Gadgets 10X Faster
                 </h2>
 
                 <div className="flex flex-col md:flex-row items-center gap-6 w-full md:w-auto">
