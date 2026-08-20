@@ -1,27 +1,29 @@
-import { Navbar } from '@/components/Navbar'
-import { Footer } from '@/components/Footer'
-import { Hero } from '@/components/sections/Hero'
-import { ThinkDescribeBuild } from '@/components/sections/ThinkDescribeBuild'
-import { AiThatUnderstands } from '@/components/sections/AiThatUnderstands'
-import { IdeaToManufacturing } from '@/components/sections/IdeaToManufacturing'
-import { BuiltForEngineers } from '@/components/sections/BuiltForEngineers'
-import { FinalCta } from '@/components/sections/FinalCta'
-import { Partners } from '@/components/sections/Partners'
+"use client";
 
-export default function HomePage() {
+import React from 'react';
+import Navigation from '@/components/Navigation';
+import ContentPanel from '@/components/ContentPanel';
+import BackgroundManager from '@/components/BackgroundManager';
+
+// import { useAppStore } from '@/lib/store';
+
+export default function Home() {
+
+
   return (
-    <>
-      <Navbar />
-      <main id="main">
-        <Hero />
-        <ThinkDescribeBuild />
-        <AiThatUnderstands />
-        <IdeaToManufacturing />
-        <BuiltForEngineers />
-        <FinalCta />
-        <Partners />
-      </main>
-      <Footer />
-    </>
-  )
+    <main className="w-full relative bg-black">
+
+      <Navigation />
+
+      {/* Fixed Background Layer */}
+      <div className="fixed inset-0 w-full h-full z-0 pointer-events-none">
+        <BackgroundManager />
+      </div>
+
+      {/* Scrollable Content Layer */}
+      <div className="fixed inset-0 w-full h-[100dvh] overflow-y-auto md:snap-y md:snap-mandatory z-30">
+        <ContentPanel />
+      </div>
+    </main>
+  );
 }

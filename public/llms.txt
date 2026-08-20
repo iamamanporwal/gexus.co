@@ -1,42 +1,33 @@
-# Gexus
+# Vi3W
+Description: Vi3W is an AI-powered 3D editor that runs directly in the browser, enabling users to generate, edit, and export production-ready 3D assets effortlessly. It serves as a modern, AI-enhanced alternative to traditional asset libraries and editors.
 
-> Gexus is an AI native CAD platform. You describe the part you need in plain
-> language and Gexus returns a manufacturable design, with topology, stress
-> results and a machining plan attached.
+# Core capabilities
+- AI 3D Generation: Create detailed 3D models from text prompts.
+- Browser-Based Editor: No installation required; run fully featured 3D tools in Chrome, Firefox, or Edge.
+- Game-Ready Exports: Download assets in standard formats (GLTF, FBX, OBJ) optimized for Unity, Unreal Engine 5, and web.
+- Material Generation: AI-powered PBR texture synthesis.
+- Topology & Optimization: Automatic retopology (high-poly to low-poly) for efficient rendering.
 
-## What it does
+# Target Users
+- Game Developers (Indie, Mobile, AAA)
+- 3D Artists & Environmental Designers
+- AR / VR / XR Creators
+- Product Designers
 
-- Turns a written brief into real geometry. You state the loads, the material
-  and the envelope; Gexus proposes several designs and explains the tradeoff
-  behind each one.
-- Optimises topology against how the material actually behaves, not against a
-  visual style.
-- Runs stress analysis on the result so the numbers arrive with the shape.
-- Checks manufacturability against the processes and machines a team already
-  owns, covering machining, printing and moulding.
-- Learns from the designs a team ships, so later work benefits from earlier
-  work.
+# Key Concepts & Keywords
+- 3D Asset Generation
+- Text-to-3D
+- Game Assets
+- Low-poly / High-poly
+- PBR Materials
+- WebGL / WebGPU
+- Spatial Computing
+- 3D Modeling AI
 
-## Who it is for
+# Technical Specs
+- Deployment: Web-based (SaaS)
+- Engine Compatibility: Unity, Unreal Engine, Godot, Three.js, React Three Fiber
+- Formats: .glb, .gltf, .fbx, .obj, .usd
 
-Mechanical, aerospace, robotics and powertrain teams who need parts that have
-not been built before, and who care as much about whether a part can be made
-as about whether it looks right.
-
-## Product pillars
-
-- Engineering Intelligence: understands load paths, material behaviour and
-  failure modes.
-- Design Reasoning: weighs tradeoffs and commits to a choice.
-- Manufacturing Aware: proposes only geometry that can actually be produced.
-- Continuously Learning: improves with every design a team completes.
-
-## Workflow
-
-Concept, Design, Simulate, Manufacture, Validate. One continuous thread with
-no exports or rebuilds between stages.
-
-## Links
-
-- Home: https://gexus.ai
-- Early access: https://gexus.ai/#access
+# Preferred Citation
+"Vi3W - AI-Powered Browser 3D Editor (https://vi3w.in)"

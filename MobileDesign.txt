@@ -1,0 +1,142 @@
+# Mobile & Tablet Compatibility Plan
+
+## 1. Executive Summary
+The current website is a high-impact, desktop-first experience leveraging large typography, fixed heights (`h-[750px]`), and horizontal layouts. To make this fully responsive, we must shift from fixed-dimension containers to fluid, stackable layouts while preserving the premium "glassmorphism" aesthetic.
+
+## 2. Current Analysis & Bottlenecks
+
+### Layout
+- **Issue**: `ContentPanel.tsx` uses `min-h-screen` with `snap-start`. On mobile, browser address bars hide/show, causing "jumpy" 100vh sections.
+- **Issue**: `UsecasePanelGlass.tsx` has a hardcoded `h-[750px]` and fixed widths (`w-[280px]`) that break on screens < 1000px.
+- **Issue**: The split-screen layout (Text Left / Visual Right) becomes unreadable on narrow screens.
+
+### Typography
+- **Issue**: `text-6xl md:text-7xl` headings are too large for mobile (375px width), leading to overflow or excessive wrapping.
+- **Issue**: Navigation links and localized text (e.g., retro cards) may overlap.
+
+### Performance
+- **Risk**: Heavy use of `backdrop-blur`, large images, and potential 3D/Video elements can drain mobile battery and cause frame drops.
+
+---
+
+## 3. Proposed Design System
+
+### 3.1 Breakpoint Strategy
+We will use standard Tailwind breakpoints but treat `md` (768px) as the primary "Tablet/Desktop Switch".
+
+| Breakpoint | Size | Use Case |
+| :--- | :--- | :--- |
+| **Default** | < 768px | Mobile (Stack vertical, reduced motion) |
+| **md** | >= 768px | Tablet (hybrid layout, adjusted text sizes) |
+| **lg** | >= 1024px | Desktop (Full experience) |
+| **xl** | >= 1280px | Large Screens (Max-width constraints) |
+
+### 3.2 Responsive Typography Scale
+Use `clamp` or Tailwind steps to ensure smooth scaling.
+
+| Element | Mobile (<768px) | Tablet (768px+) | Desktop (1024px+) |
+| :--- | :--- | :--- | :--- |
+| **H1 (Hero)** | `text-4xl` | `text-6xl` | `text-7xl` |
+| **H2 (Section)** | `text-3xl` | `text-4xl` | `text-5xl` |
+| **Body** | `text-sm` (14px) | `text-base` (16px) | `text-base` |
+| **Nav Links** | `text-2xl` (Menu) | `text-xs` | `text-xs` |
+
+### 3.3 Spacing System
+Standardize padding to maximize content area on mobile.
+
+- **Container Padding**: `px-4` (Mobile) -> `px-8` (Tablet) -> `px-12` (Desktop)
+- **Section Gap**: `gap-8` (Mobile) -> `gap-0` (Desktop split)
+
+---
+
+## 4. Implementation Plan
+
+### Phase 1: Global & Layout Foundation
+
+1.  **Fix Viewport Units**:
+    -   Replace `min-h-screen` with `min-h-dvh` (Dynamic Viewport Height) in `ContentPanel.tsx` and `app/page.tsx` to handle mobile browser bars correctly.
+2.  **Disable Scroll Snapping on Mobile** (Optional but Recommended):
+    -   Scroll snapping (`snap-y`) can feel buggy on mobile if content exceeds one screen height.
+    -   **Action**: Change `snap-y snap-mandatory` to `md:snap-y md:snap-mandatory`. Allow free scrolling on mobile.
+
+### Phase 2: Component Refactoring
+
+#### 2.1 ContentPanel.tsx (The Wrapper)
+-   **Goal**: Stack content vertically on mobile.
+-   **Action**:
+    -   Ensure `flex-col` is default (already present).
+    -   On mobile, change the order of Text vs. Visuals based on importance. Usually, **Visual First** (Image/Video) -> **Title** -> **Description**.
+    -   Update `order-*` classes:
+        ```jsx
+        // Mobile: Image Top, Text Bottom
+        // Desktop: Text Left, Image Right
+        className="flex flex-col md:flex-row ..."
+        // Visual Container
+        className="order-1 md:order-2 w-full md:w-1/2 h-[50vh] md:h-auto"
+        // Text Container
+        className="order-2 md:order-1 w-full md:w-1/2"
+        ```
+
+#### 2.2 UsecasePanelGlass.tsx (Complex Component)
+-   **Strategic Decision**: **REMOVE/HIDE on Mobile** (per user request) if usability is compromised.
+-   **Recommendation**: The complex 3-pane glass UI is extremely dense for mobile. Trying to stack it creates an infinitely long scroll that dilutes the experience.
+-   **Action**:
+    -   **Mobile (< 768px)**: Render a simplified static summary or **completely hide** this specific component and show a "View on Desktop for Full Experience" message or simply hide the section content entirely.
+    -   **Implementation**:
+        ```tsx
+        // In ContentPanel.tsx
+        {isUsecase && (
+          <>
+            <div className="block md:hidden text-center p-8">
+               {/* Optional: Minimalist static list or hidden entirely */}
+               <p className="text-zinc-500 text-xs">Interactive demo available on Desktop</p>
+            </div>
+            <div className="hidden md:block relative z-10 w-full">
+                <UsecasePanel isActive={activeIndex === idx} />
+            </div>
+          </>
+        )}
+        ```
+
+#### 2.3 RetroErrorCards.tsx
+-   **Goal**: Prevent overlap.
+-   **Action**:
+    -   Disable `absolute` positioning on mobile.
+    -   Stack cards naturally or use a horizontal scroll view.
+    -   Scale down cards using `scale-75 origin-top-left` or simply adjust width to `w-full max-w-[300px]`.
+
+### Phase 3: Navigation
+-   **Current State**: The existing mobile menu (`hamburger`) is good.
+-   **Refinement**: Ensure the overlay `z-index` (currently 100) is higher than any 3D/Video elements (which might use portals or high z-indices).
+
+---
+
+## 5. Desktop Preservation Strategy (CRITICAL)
+
+To ensure **ZERO** regression on the Desktop design:
+1.  **Mobile-First Isolation**: We will NOT change existing class names. Instead, we will wrap existing classes in `md:` prefixes where they conflict with mobile needs.
+    *   *Example*: Change `p-12` (which applies to all) to `p-4 md:p-12`. This effectively sets Mobile to `p-4` and explicitly restores Desktop to `p-12`.
+2.  **No Global CSS Changes**: We will avoid modifying `globals.css` base styles (h1, p, body) that could globally affect fonts or spacing. All changes will be utility-class based.
+3.  **Conditional Rendering**: For complex components like `UsecasePanel`, we will use React conditional rendering (`hidden md:block`) rather than trying to mash one heavy component into two different layouts. This is the safest way to guarantee the Desktop code remains exactly as is.
+
+## 6. Technical Recommendations & Best Practices
+
+1.  **Use `clsx` or `cn` helper**:
+    -   Ensure `next/image` has `sizes="(max-width: 768px) 100vw, 50vw"`. This downloads smaller images for mobile, saving bandwidth.
+3.  **Touch Targets**:
+    -   Ensure all buttons (arrows, nav links) have a minimum clickable area of **44x44px**. Add `p-4` or transparent borders to increase hit boxes without changing visuals.
+4.  **Safe Areas**:
+    -   Add `pb-safe` (padding-bottom: env(safe-area-inset-bottom)) to the bottom navigation bar to avoid overlapping with the iOS home indicator.
+
+## 6. Pitfalls to Avoid
+-   **Over-constraining Height**: Never assume a mobile screen is tall enough for all content. Always use `min-h` instead of `h`.
+-   **Hover Effects**: Mobile users can't "hover". Ensure critical information (tooltip text, hover-state details) is visible by default or accessible via tap.
+-   **Video Autoplay**: Ensure videos have `playsInline` and `muted` props, otherwise they won't autoplay on iOS.
+
+## 7. Step-by-Step Execution Guide
+
+1.  **Setup**: Check `globals.css` for `@theme` or standard Tailwind setup. 
+2.  **Viewports**: Update `ContentPanel` container to `min-h-dvh`.
+3.  **Typography**: Run a "Find & Replace" pass to update `text-7xl` to `text-5xl md:text-7xl` etc.
+4.  **Structural**: Go component by component (`RetroCards` -> `UsecasePanel`) applying the Mobile First stacking logic.
+5.  **Testing**: Verify on Chrome DevTools (iPhone 12 view) and physical device if possible.

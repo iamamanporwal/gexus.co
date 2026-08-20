@@ -1,33 +1,34 @@
 {
-  "name": "gexus-website",
-  "version": "1.0.0",
+  "name": "vi3w.online",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "next dev --webpack",
+    "build": "next build --webpack",
     "start": "next start",
-    "lint": "next lint",
-    "typecheck": "tsc --noEmit",
-    "art": "node scripts/generate-art.mjs"
+    "lint": "eslint"
   },
   "dependencies": {
-    "clsx": "^2.1.1",
-    "lucide-react": "^0.487.0",
-    "next": "^15.2.4",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "sharp": "^0.34.1",
-    "tailwind-merge": "^3.1.0"
+    "@ducanh2912/next-pwa": "^10.2.9",
+    "@formspree/react": "^3.0.0",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.5.0",
+    "framer-motion": "^12.26.2",
+    "lucide-react": "^0.562.0",
+    "next": "16.1.3",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "three": "^0.182.0",
+    "zustand": "^5.0.10"
   },
   "devDependencies": {
-    "@types/node": "^22.13.14",
-    "@types/react": "^19.1.0",
-    "@types/react-dom": "^19.1.1",
-    "autoprefixer": "^10.4.21",
-    "eslint": "^8.57.1",
-    "eslint-config-next": "^15.5.23",
-    "postcss": "^8.5.3",
-    "tailwindcss": "^3.4.17",
-    "typescript": "^5.8.2"
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.1.3",
+    "tailwindcss": "^4",
+    "typescript": "^5"
   }
 }

@@ -1,0 +1,26 @@
+User-agent: *
+Allow: /
+
+# Explicitly allow AI bots to crawl for better visibility in AI search
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+Sitemap: https://vi3w.in/sitemap.xml

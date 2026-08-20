@@ -1,0 +1,142 @@
+# Vi3W Project Documentation
+
+## 1. Project Overview
+**Vi3W** is a marketing website for a spatial foundation model capable of translating intent into 3D geometry ("3D in 3 Clicks"). The project is a modern, high-performance web application designed to showcase the capabilities of the AI model through a visually immersive experience.
+
+### 1.1 Website Type: Immersive Scrollytelling
+This project falls under the category of **"Scrollytelling"** or **"Immersive Landing Page"**. It is designed to guide the user through a linear narrative controlled strictly by scrolling.
+*   **Cinematic Experience:** Unlike traditional websites that are information-dense grids, this site treats every scroll stop as a "Slide" or "Scene".
+*   **Scroll Snapping:** The viewport snaps logically to each section (`snap-y snap-mandatory`), ensuring the user always sees the intended composition.
+*   **Layered Composition:** The site decouples the *Background* (Videos, 3D scenes) from the *Foreground* (Text, UI Controls), allowing them to transition independently.
+
+---
+
+## 2. Technology Stack
+- **Framework:** Next.js 15 (App Router)
+- **Styling:** Tailwind CSS (with custom animations and utility classes)
+- **Animations:** Framer Motion (UI transitions), CSS Keyframes
+- **3D Graphics:** Three.js / React Three Fiber / @react-three/drei
+- **Icons:** Lucide React
+- **Forms:** Formspree React
+
+---
+
+## 3. Frontend Architecture & Implementation
+
+### 3.1 Layered Rendering Strategy
+The frontend is built on a specific "Z-Index Layering" architecture to handle complex visuals without layout shifts.
+*   **The Stage (Z-0):** A fixed-position container covering the entire viewport. This layer renders the "heavy" visual elements (Background Video, 3D Scene, YouTube Embed). Because it is fixed, it does not scroll with the page.
+*   **The Script (Z-30):** A scrollable container overlaying the stage. This allows the text content to scroll naturally over the fixed background effects.
+*   **The Controls (Z-50):** Navigation and interactive elements that float above everything.
+
+### 3.2 Performance Optimization Pattern
+Because the site features heavy media (3D Canvas, HD Video, Iframes), rendering everything at once would crash the browser or cause severe lag.
+*   **Conditional Rendering:** The `Home` component (`page.tsx`) tracks the `activeIndex`. It **only** renders the generic background component required for that specific section. When the user scrolls away, the previous heavy component (e.g., the 3D scene) is completely unmounted.
+*   **Lazy Loading:** Components like `ReleaseScene` (3D) and `VideoEmbed` are imported using `React.lazy()` and wrapped in `Suspense`. This ensures the JavaScript for the 3D engine is not loaded until the user actually reaches that section.
+*   **Intersection Observers:** Instead of relying on scroll position (pixels), the app uses `IntersectionObserver` API to detect which DOM element is in view. This is more performant than listening to `scroll` events.
+
+### 3.3 Core Logic Flow
+1.  **User Scrolls:** The `ContentPanel` container scrolls.
+2.  **Observer Triggers:** `IntersectionObserver` detects that "Section 4" is now >50% visible.
+3.  **State Update:** `setIndex(4)` is called.
+4.  **Re-Render:**
+    *   `page.tsx` sees index 4.
+    *   Unmounts `VideoEmbed` (Section 2).
+    *   Mounts `ReleaseScene` (Section 4).
+    *   `UsecasePanel` updates its internal state if visible.
+
+---
+
+## 4. File Structure
+The project follows a standard Next.js App Router structure, optimized for component modularity.
+
+```
+/vi3w.online
+├── app/
+│   ├── globals.css         # Global styles, Tailwind directives, custom animations
+│   ├── layout.tsx          # Root layout, fonts (Inter/JetBrains), metadata
+│   └── page.tsx            # Main Entry Point. Manages activeIndex state & background layers
+│
+├── components/
+│   ├── ContentPanel.tsx    # Main scrollable container. Handles IntersectionObserver & Scroll Snap
+│   ├── Navigation.tsx      # Top navbar with mobile menu overlay
+│   ├── Preloader.tsx       # Initial loading screen
+│   ├── EmailForm.tsx       # Waitlist signup form with custom aesthetic borders
+│   ├── RainEffect.tsx      # Global background particle effect
+│   │
+│   ├── [Section Specific Components]
+│   ├── VideoBackground.tsx # Hero Section: html5 video player
+│   ├── RetroErrorCards.tsx # Problem Section: Draggable/Fleeing error windows
+│   ├── VideoEmbed.tsx      # Product Section: YouTube embed wrapper
+│   ├── UsecasePanelGlass.tsx # Usecase Section: Complex tabbed interface
+│   └── ReleaseScene.tsx    # Release Section: R3F 3D Scene (Ribbon DNA)
+│
+├── lib/
+│   └── data.ts             # centralized configuration for Section Titles, Colors, and Copy
+│
+└── public/                 # Static assets (images, videos, 3D models)
+```
+
+---
+
+## 5. Component Documentation
+
+### 5.1 Layout & Navigation
+
+#### `components/Navigation.tsx`
+A responsive navigation bar fixed at the top of the viewport.
+- **Desktop:** Displays links (Home, Github, Waitlist, Careers) and a "Get Access" button.
+- **Mobile:** Features a hamburger menu that expands into a full-screen overlay with blurred backdrop.
+- **Design:** Uses `mix-blend-difference` to ensure text visibility against both light and dark backgrounds.
+
+#### `components/Preloader.tsx`
+Handles the initial loading state of the application.
+- Displays a pulsing logo centered on the screen.
+- Fades out smoothly once the app signals loading is complete.
+
+### 5.2 Content Modules
+
+#### `components/UsecasePanelGlass.tsx` (Use Case Section)
+A complex, interactive interactive tabbed interface demonstrating specific use cases (Simulations, Product Design, Architecture).
+- **Structure:**
+  - **Left Panel:** Navigation tabs with categories and emojis.
+  - **Middle Panel:** Image slideshow with auto-play (5s interval), pause button, and navigation dots.
+  - **Right Panel:** Detail view rendering Markdown-formatted text for the selected image.
+- **Implementation:** Uses `Active State` to switch data contexts. heavily utilizes transparent "glass" styles with multiple border layers and shadows to create depth.
+
+#### `components/RetroErrorCards.tsx` (Problem Section)
+Adds storytelling elements representing "old way" problems (Error 404, GPU Overload).
+- **Design:** Mimics Windows 95/98 error dialogs.
+- **Interaction:** "Run Away" easter egg – hovering over close buttons causes them to randomly move to a new position using `framer-motion`.
+
+#### `components/EmailForm.tsx` (Hero Section)
+Captures user emails for the waitlist.
+- **Backend:** Integrated with Formspree (`useForm`).
+- **Visuals:** Features a unique "spinning border" effect created with two overlapping conic gradients (`animate-border-spin-smooth`, `animate-border-spin-reverse`) to mimic a high-tech glowing ring.
+
+#### `components/VideoEmbed.tsx` (Product Section)
+Embeds a YouTube video showcasing the product.
+- **Styling:** Wrapped in a glass-morphism container with a gradient border.
+- **Implementation:** Standard iframe embedding.
+
+### 5.3 Visual Backgrounds & Effects
+
+#### `components/VideoBackground.tsx`
+Handles the full-screen video background for the Hero section.
+- **Logic:** Watches `activeIndex` and plays/pauses the video file defined in `lib/data.ts` (e.g., `Background1.mp4`).
+- **Performance:** Manages `autoPlay` restrictions and `onLoaded` states to prevent flickering.
+
+#### `components/ReleaseScene.tsx` (Release Section)
+A 3D scene rendered using React Three Fiber.
+- **Content:** Generates a "DNA-like" double helix ribbon using `THREE.CatmullRomCurve3`.
+- **Lighting/Env:** Uses `Sparkles`, `Float`, and `Environment` from `@react-three/drei` for atmospheric effects.
+- **Significance:** Represents the "Release Day" milestone with a high-fidelity visual metaphor.
+
+
+
+---
+
+## 6. Styling Guidelines
+- **Tailwind CSS:** The project relies heavily on utility classes for layout (Flexbox/Grid), spacing, and typography.
+- **Custom Fonts:** Uses `Inter` (sans) and `JetBrains Mono` (mono) configured in `app/layout.tsx`.
+- **Glassmorphism:** A recurring theme involving `backdrop-blur`, semi-transparent backgrounds (`bg-white/10`), and delicate borders (`border-white/20`).
