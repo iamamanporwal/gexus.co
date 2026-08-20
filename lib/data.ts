@@ -2,10 +2,10 @@ export const SECTIONS = [
     {
         id: 'overview',
         number: '01',
-        label: 'Vi3W',
+        label: 'Gexus',
         color: '#3B82F6',
         title: '3D in 3 Clicks.',
-        description: `VI3W - Gen AI 3D Editor.
+        description: `Gexus - AI 3D design, in your browser.
 🌐 Runs in a browser, ✨ Text-to-3D magic`,
         prompt: 'prompt ~ a perfect sphere of pure geometric abstraction, iridescent glass material, studio lighting, minimal, 8k resolution █',
         video: 'Background1.mp4'

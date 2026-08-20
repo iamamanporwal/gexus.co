@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import { site } from '@/lib/site';
 
 export default function VideoEmbed() {
     return (
@@ -10,7 +11,7 @@ export default function VideoEmbed() {
                 <iframe
                     className="w-full h-full relative z-10"
                     src="https://www.youtube.com/embed/oGOkx7cuwvo?autoplay=0&mute=0&controls=1"
-                    title="Vi3W Materials Showcase"
+                    title={`${site.name} product showcase`}
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowFullScreen

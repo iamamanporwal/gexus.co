@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { links as siteLinks } from '@/lib/site';
 
 export default function ReleaseOverlay() {
     return (
@@ -13,8 +14,8 @@ export default function ReleaseOverlay() {
 
                 <div className="flex flex-col md:flex-row items-center gap-6 w-full md:w-auto">
                      {/* Button 1: Join Discord */}
-                    <Link 
-                        href="https://discord.com/invite/TTWcRfvM9z" 
+                    <Link
+                        href={siteLinks.discord}
                         target="_blank"
                         className="group relative cursor-pointer block"
                     >
@@ -25,7 +26,7 @@ export default function ReleaseOverlay() {
 
                     {/* Button 2: Try Beta */}
                      <Link 
-                        href="https://app.vi3w.in" 
+                        href={siteLinks.app}
                         target="_self"
                          className="group relative cursor-pointer block"
                     >

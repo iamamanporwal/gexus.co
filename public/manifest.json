@@ -1,19 +1,19 @@
 {
-    "name": "Vi3W",
-    "short_name": "Vi3W",
+    "id": "/",
+    "name": "Gexus",
+    "short_name": "Gexus",
+    "description": "Browser based 3D design for product teams.",
+    "start_url": "/",
+    "scope": "/",
     "theme_color": "#000000",
     "background_color": "#000000",
     "display": "standalone",
     "icons": [
         {
-            "src": "/pwa-icon.png",
-            "sizes": "192x192",
-            "type": "image/png"
-        },
-        {
-            "src": "/pwa-icon.png",
+            "src": "/FAVICON.png",
             "sizes": "512x512",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "any"
         }
     ]
 }

@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef } from 'react';
-import Link from 'next/link';
 
 export default function ReleaseScene({ active }: { active: boolean }) {
     const canvasRef = useRef<HTMLCanvasElement>(null);

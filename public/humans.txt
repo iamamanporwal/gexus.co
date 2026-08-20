@@ -1,16 +1,15 @@
 /* TEAM */
   Founder: Aman Porwal
-  Email: aman07porwal@gmail.com
-  Site: Vi3W Tech
+  Site: Gexus
   Location: Global
 
 /* SITE */
   Standards: HTML5, CSS3, WebGL, WebGPU
-  Components: Next.js, React Three Fiber, Tailwind CSS
+  Components: Next.js, Tailwind CSS
   Software: VS Code
 
 /* PRODUCT */
-  Name: Vi3W
-  Focus: AI-Powered 3D Asset Creation & Browser-Based Editing
-  Domain: https://vi3w.in
+  Name: Gexus
+  Focus: Browser based 3D design for product teams
+  Domain: https://gexus.co
   Tagline: 3D in 3 Clicks

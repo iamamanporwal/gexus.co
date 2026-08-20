@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import Script from "next/script";
+import { site } from "@/lib/site";
 import "./globals.css";
 
 const inter = Inter({
@@ -15,16 +16,32 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+const title = `${site.name} - ${site.tagline}`;
+
 export const metadata: Metadata = {
-  title: "Vi3W - 3D in 3 Cilcks",
-  description: "Vi3W is a spatial foundation model that translates intent into geometry. Generate production-ready 3D assets for Unity, Unreal Engine 5, and React Three Fiber in seconds.",
-  keywords: ["Text to 3D", "AI 3D Generation", "Spatial Foundation Model", "Vi3W", "3D Assets", "Game Development", "AR", "VR", "Metaverse"],
+  // Without metadataBase, every OG and Twitter image URL resolves relative and
+  // Next warns at build time.
+  metadataBase: new URL(site.url),
+  title,
+  description: site.description,
+  keywords: [...site.keywords],
+  applicationName: site.name,
+  // The one signal that stops gexus.co and gexus.in splitting the same page.
+  alternates: { canonical: "/" },
   openGraph: {
-    title: "Vi3W - 3D in 3 Cilcks",
-    description: "Generate production-ready 3D assets from text. Logic, topology, and physics included.",
+    title,
+    description: site.description,
     type: "website",
-    url: "https://vi3w.online",
-  }
+    url: "/",
+    siteName: site.name,
+    locale: site.locale,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description: site.description,
+  },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({
@@ -38,20 +55,24 @@ export default function RootLayout({
         className={`${inter.variable} ${jetbrainsMono.variable} antialiased font-sans`}
         suppressHydrationWarning
       >
-        <Script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-60495EYSG4"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
+        {site.analyticsId && (
+          <>
+            <Script
+              async
+              src={`https://www.googletagmanager.com/gtag/js?id=${site.analyticsId}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
 
-            gtag('config', 'G-60495EYSG4');
-          `}
-        </Script>
+                gtag('config', '${site.analyticsId}');
+              `}
+            </Script>
+          </>
+        )}
         {children}
       </body>
     </html>

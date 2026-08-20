@@ -1,10 +1,14 @@
 import type { NextConfig } from "next";
-const withPWA = require("@ducanh2912/next-pwa").default({
+import withPWAInit from "@ducanh2912/next-pwa";
+
+// ESM import rather than require(): the require() form was the single error
+// failing `npm run lint`. swcMinify was also dropped here, it is a no-op in
+// Next 16.
+const withPWA = withPWAInit({
   dest: "public",
   cacheOnFrontEndNav: true,
   aggressiveFrontEndNavCaching: true,
   reloadOnOnline: true,
-  swcMinify: true,
   disable: process.env.NODE_ENV === "development",
   workboxOptions: {
     disableDevLogs: true,
@@ -27,9 +31,8 @@ const nextConfig: NextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 31536000, // 1 year
-    dangerouslyAllowSVG: true,
-    contentDispositionType: 'attachment',
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    // dangerouslyAllowSVG was enabled with no SVGs anywhere in public/. Removed
+    // rather than carry the XSS surface for nothing.
   },
 
   // Add caching headers for static assets

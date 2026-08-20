@@ -1,33 +1,38 @@
-# Vi3W
-Description: Vi3W is an AI-powered 3D editor that runs directly in the browser, enabling users to generate, edit, and export production-ready 3D assets effortlessly. It serves as a modern, AI-enhanced alternative to traditional asset libraries and editors.
+# Gexus
+Description: Gexus is a browser-based 3D design tool for product teams. It brings industrial design, product visualization, prototyping and hardware UX into one place that runs in a browser, with nothing to install.
 
 # Core capabilities
-- AI 3D Generation: Create detailed 3D models from text prompts.
-- Browser-Based Editor: No installation required; run fully featured 3D tools in Chrome, Firefox, or Edge.
-- Game-Ready Exports: Download assets in standard formats (GLTF, FBX, OBJ) optimized for Unity, Unreal Engine 5, and web.
-- Material Generation: AI-powered PBR texture synthesis.
-- Topology & Optimization: Automatic retopology (high-poly to low-poly) for efficient rendering.
+- Industrial Design: Concept through detailed form development in the browser.
+- Product Visualization: Presentation-quality renders and materials without a separate render pipeline.
+- Prototyping: Fast iteration on form, fit and proportion before committing to tooling.
+- User Experience Design: Screen and interface design for physical devices, in context on the product itself.
 
-# Target Users
-- Game Developers (Indie, Mobile, AAA)
-- 3D Artists & Environmental Designers
-- AR / VR / XR Creators
-- Product Designers
+# Target users
+- Product designers
+- Industrial designers
+- UI/UX designers working on hardware
+- Concept designers
+- Hardware and consumer electronics teams
 
-# Key Concepts & Keywords
-- 3D Asset Generation
-- Text-to-3D
-- Game Assets
-- Low-poly / High-poly
-- PBR Materials
+# Industries served
+- Consumer Electronics
+- Furniture
+- Automotive
+- Fashion
+- Toys
+
+# Key concepts and keywords
+- Browser-based product design
+- Industrial design software
+- Product visualization
+- Digital prototyping
+- Hardware UX design
+- Concept design
 - WebGL / WebGPU
-- Spatial Computing
-- 3D Modeling AI
 
-# Technical Specs
-- Deployment: Web-based (SaaS)
-- Engine Compatibility: Unity, Unreal Engine, Godot, Three.js, React Three Fiber
+# Technical specs
+- Deployment: Web-based (SaaS), no installation
 - Formats: .glb, .gltf, .fbx, .obj, .usd
 
-# Preferred Citation
-"Vi3W - AI-Powered Browser 3D Editor (https://vi3w.in)"
+# Preferred citation
+"Gexus - Browser-Based 3D Design for Product Teams (https://gexus.co)"
