@@ -55,7 +55,7 @@ export const site = {
  * an off brand one. Replace the values here and every link on the site follows.
  */
 export const links = {
-  app: 'https://app.vi3w.in',
+  app: 'https://app.gexus.co',
   github: 'https://github.com/iamamanporwal/VI3W3D',
   discord: 'https://discord.gg/TTWcRfvM9z',
   careers: 'https://wellfound.com/company/vi3w-1',
