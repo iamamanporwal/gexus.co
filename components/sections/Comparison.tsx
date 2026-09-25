@@ -41,7 +41,7 @@ export function Comparison() {
         </>
       }
     >
-      <div className="grid gap-4 xl:grid-cols-[minmax(0,0.8fr)_minmax(0,1fr)]">
+      <div className="grid gap-4 2xl:grid-cols-[minmax(0,0.8fr)_minmax(0,1fr)]">
         <Panel
           image={legacy}
           alt="An overwhelmed engineer gripping his head in frustration"
@@ -98,7 +98,7 @@ function Panel({
           alt={alt}
           fill
           placeholder="blur"
-          sizes="(min-width: 1280px) 25vw, (min-width: 640px) 40vw, 100vw"
+          sizes="(min-width: 1536px) 25vw, (min-width: 640px) 40vw, 100vw"
           className={`object-cover object-right ${grayscale ? "grayscale" : ""}`}
         />
         <div className="absolute inset-0 hidden bg-gradient-to-r from-panel via-panel/40 to-transparent sm:block" />

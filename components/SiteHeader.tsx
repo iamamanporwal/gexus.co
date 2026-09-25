@@ -10,9 +10,9 @@ import { links, nav } from "@/lib/site";
 export function SiteHeader() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-ink/75 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-[1400px] items-center gap-10 px-5 md:px-10 lg:px-14">
-        <a href="#top" aria-label="Gexus home" className="shrink-0">
-          <Logo className="text-[22px] md:text-[24px]" />
+      <div className="mx-auto flex h-16 max-w-[1400px] items-center gap-3 px-5 sm:gap-10 md:px-10 lg:px-14">
+        <a href="#top" aria-label="Gexus home" className="shrink-0 py-2">
+          <Logo className="text-[20px] sm:text-[22px] md:text-[24px]" />
         </a>
 
         <nav aria-label="Primary" className="hidden lg:block">
@@ -21,7 +21,7 @@ export function SiteHeader() {
               <li key={item.href}>
                 <a
                   href={item.href}
-                  className="text-[15px] font-medium text-[#c3c6c9] transition-colors hover:text-white"
+                  className="inline-block py-2 text-[15px] font-medium text-[#c3c6c9] transition-colors hover:text-white"
                 >
                   {item.name}
                 </a>
@@ -39,14 +39,19 @@ export function SiteHeader() {
           </ButtonLink>
         </div>
 
-        <details className="menu relative ml-auto sm:ml-0 lg:hidden">
+        {/* Phones keep one call to action in view; the full pair lives in the menu. */}
+        <ButtonLink href={links.app} variant="light" className="ml-auto h-10 px-4 text-[14px] sm:hidden">
+          Try free
+        </ButtonLink>
+
+        <details className="menu relative sm:ml-0 lg:hidden">
           <summary
             aria-label="Open menu"
             className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border border-line text-white"
           >
             <Icon.menu />
           </summary>
-          <div className="absolute right-0 mt-3 w-64 rounded-xl border border-line bg-panel p-3 shadow-2xl">
+          <div className="absolute right-0 mt-3 w-[min(16rem,calc(100vw-2.5rem))] rounded-xl border border-line bg-panel p-3 shadow-2xl">
             <ul>
               {nav.map((item) => (
                 <li key={item.href}>

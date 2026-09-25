@@ -15,9 +15,9 @@ export function Security() {
     <section
       id="security"
       aria-label="Security"
-      className="grid items-center overflow-hidden border-t border-white/5 bg-ink md:grid-cols-2 lg:min-h-[384px] lg:grid-cols-[minmax(0,1fr)_minmax(320px,1.05fr)_minmax(0,0.95fr)_minmax(230px,0.6fr)]"
+      className="grid items-center overflow-hidden border-t border-white/5 bg-ink md:grid-cols-2 xl:min-h-[384px] xl:grid-cols-[minmax(0,1fr)_minmax(340px,1.05fr)_minmax(0,0.95fr)_minmax(240px,0.6fr)]"
     >
-      <div className="relative hidden h-full min-h-[384px] lg:block">
+      <div className="relative hidden h-full min-h-[384px] xl:block">
         <Image
           src={builder}
           alt="Close-up of a determined young engineer glancing over his shoulder"
@@ -29,7 +29,7 @@ export function Security() {
         <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-ink to-transparent" />
       </div>
 
-      <div className="px-5 pt-16 md:px-10 md:pb-14 lg:px-6 lg:py-16">
+      <div className="px-5 pt-16 md:px-10 md:pb-14 xl:px-6 xl:py-16">
         <h2 className="origin-left -rotate-[9deg] -skew-x-[8deg] font-hand text-[clamp(2.6rem,3.9vw,3.6rem)] leading-[0.92] font-semibold text-white uppercase">
           Your designs
           <br />
@@ -43,7 +43,7 @@ export function Security() {
         </p>
       </div>
 
-      <div className="relative mx-5 aspect-[432/315] md:mx-0 md:mr-10 lg:mr-0">
+      <div className="relative mx-5 aspect-[432/315] md:mx-0 md:mr-10 xl:mr-0">
         <Image
           src={part}
           alt="A translucent blueprint render of a motor bracket protected by a padlock icon"
@@ -54,11 +54,11 @@ export function Security() {
         />
       </div>
 
-      <ul className="grid grid-cols-2 gap-x-6 gap-y-5 px-5 pt-6 pb-14 md:col-span-2 md:grid-cols-4 md:px-10 lg:col-span-1 lg:grid-cols-1 lg:gap-0 lg:py-10 lg:pr-14 lg:pl-0">
+      <ul className="grid grid-cols-2 gap-x-6 gap-y-5 px-5 pt-6 pb-14 md:col-span-2 md:grid-cols-4 md:px-10 xl:col-span-1 xl:grid-cols-1 xl:gap-0 xl:py-10 xl:pr-14 xl:pl-0">
         {promises.map(({ label, Icon: PromiseIcon }) => (
           <li
             key={label}
-            className="flex items-center gap-4 lg:border-b lg:border-white/10 lg:py-4 lg:last:border-b-0"
+            className="flex items-center gap-4 xl:border-b xl:border-white/10 xl:py-4 xl:last:border-b-0"
           >
             <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-line bg-panel">
               <PromiseIcon />

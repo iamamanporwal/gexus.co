@@ -29,7 +29,7 @@ export function HowItWorks() {
       }
       lede="From a simple idea to a manufacturing-ready 3D model in just 3 steps."
     >
-      <ol className="grid gap-10 md:grid-cols-3 md:gap-0">
+      <ol className="grid gap-10 md:gap-0 lg:grid-cols-3">
         <Step n={1} title="Describe" body="Type, sketch or upload an image.">
           <div className={`${card} p-3`}>
             <p className="min-h-[124px] rounded-lg border border-white/5 bg-white/[0.03] p-4 text-[15.5px] leading-[1.6] text-[#e3e6e9]">
@@ -111,7 +111,9 @@ function Step({
   children: React.ReactNode;
 }) {
   return (
-    <li className="flex flex-col md:border-l md:border-white/10 md:px-6 md:first:border-l-0 md:first:pl-0 md:last:pr-0 lg:px-8">
+    // Phone: stacked. Tablet: one row per step, heading beside its card.
+    // lg and up: three columns split by hairlines, as in the design.
+    <li className="flex flex-col md:grid md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:items-start md:gap-10 md:border-t md:border-white/10 md:py-8 md:first:border-t-0 md:first:pt-0 md:last:pb-0 lg:flex lg:items-stretch lg:border-t-0 lg:border-l lg:px-6 lg:py-0 lg:first:border-l-0 lg:first:pl-0 lg:last:pr-0 xl:px-8">
       <div className="flex gap-4">
         <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#4c98fc] text-[20px] font-bold text-[#06101d]">
           {n}
@@ -121,7 +123,7 @@ function Step({
           <p className="mt-2.5 text-[15.5px] leading-[1.45] text-[#969b9f]">{body}</p>
         </div>
       </div>
-      <div className="mt-6 md:mt-8">{children}</div>
+      <div className="mt-6 md:mt-0 lg:mt-8">{children}</div>
     </li>
   );
 }

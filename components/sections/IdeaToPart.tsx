@@ -14,10 +14,10 @@ export function IdeaToPart() {
         fill
         placeholder="blur"
         sizes="100vw"
-        className="-z-10 object-cover object-[45%_center]"
+        className="-z-10 object-cover object-[42%_center] md:object-[45%_center]"
       />
-      <div className="relative -translate-x-[4%] lg:-translate-x-[6%]">
-        <h2 className="-rotate-[12deg] -skew-x-[18deg] font-brush text-[clamp(3.25rem,6vw,5.6rem)] leading-[0.88] text-[#0b0b0c]">
+      <div className="relative">
+        <h2 className="-rotate-[12deg] -skew-x-[18deg] font-brush text-[clamp(3rem,6vw,5.6rem)] leading-[0.88] text-[#0b0b0c] [text-shadow:0_0_18px_rgba(255,255,255,0.9),0_0_36px_rgba(255,255,255,0.6)]">
           Idea
           <br />
           <span className="pl-[0.4em]">to part</span>

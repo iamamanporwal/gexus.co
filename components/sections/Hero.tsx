@@ -35,15 +35,16 @@ export function Hero() {
           className="object-cover object-[78%_center] lg:object-right"
         />
         {/* Hides the baked-in ghost copy on the left of the source artwork. */}
-        <div className="absolute inset-0 hidden bg-[linear-gradient(90deg,#02060a_0%,#02060a_30%,rgba(2,6,10,0.85)_40%,rgba(2,6,10,0)_58%)] lg:block" />
+        {/* Narrow laptops push the art under the copy, so the fade runs further there. */}
+        <div className="absolute inset-0 hidden bg-[linear-gradient(90deg,#02060a_0%,#02060a_34%,rgba(2,6,10,0.88)_46%,rgba(2,6,10,0)_66%)] lg:block 2xl:bg-[linear-gradient(90deg,#02060a_0%,#02060a_30%,rgba(2,6,10,0.85)_40%,rgba(2,6,10,0)_58%)]" />
         {/* Below desktop the whole artwork shows; fade its left edge, where the source has blurred placeholder avatars. */}
-        <div className="absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-ink to-transparent lg:hidden" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,#02060a_0%,#02060a_14%,rgba(2,6,10,0)_42%)] lg:hidden" />
         <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-ink to-transparent" />
         <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-ink to-transparent" />
       </div>
 
       <div className={`${container} relative`}>
-        <p className="text-[15px] font-medium tracking-[0.08em] text-eyebrow uppercase md:text-[20px]">
+        <p className="text-[13px] font-medium tracking-[0.06em] text-eyebrow uppercase sm:text-[15px] sm:tracking-[0.08em] md:text-[20px]">
           AI-assisted CAD for real builders
         </p>
 
@@ -58,9 +59,9 @@ export function Hero() {
           models, in your browser.
         </p>
 
-        <ol className="mt-9 flex items-start gap-3 sm:gap-6" aria-label="Three steps">
+        <ol className="mt-8 flex items-start gap-2 sm:mt-9 sm:gap-6" aria-label="Three steps">
           {steps.map(({ label, Icon }, i) => (
-            <li key={label} className="flex items-start gap-3 sm:gap-6">
+            <li key={label} className="flex items-start gap-2 sm:gap-6">
               <div className="flex w-[76px] flex-col items-center gap-3">
                 <div className="flex h-[64px] w-[64px] items-center justify-center rounded-[10px] border-[1.5px] border-line bg-[rgba(6,9,13,0.9)] sm:h-[76px] sm:w-[76px]">
                   <Icon className="h-8 w-8 sm:h-10 sm:w-10" />
@@ -72,14 +73,14 @@ export function Hero() {
           ))}
         </ol>
 
-        <div className="mt-10 flex flex-wrap items-center gap-x-7 gap-y-4">
-          <ButtonLink href={links.app} className="h-[60px] px-9 text-[18.5px]">
+        <div className="mt-9 flex flex-col items-stretch gap-3 sm:mt-10 sm:flex-row sm:items-center sm:gap-7">
+          <ButtonLink href={links.app} className="h-14 px-9 text-[17px] sm:h-[60px] sm:text-[18.5px]">
             Try GEXUS Free
           </ButtonLink>
           <a
             href={demo ?? "#how-it-works"}
             {...(demo ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-            className="text-[15.5px] font-semibold text-[#f2f4f6] underline underline-offset-4 hover:text-white"
+            className="self-center py-2 text-[15.5px] font-semibold text-[#f2f4f6] underline underline-offset-4 hover:text-white sm:self-auto"
           >
             {demo ? "Watch 1 min demo" : "See how it works"}
             <span className="ml-1.5 inline-block text-brand no-underline" aria-hidden="true">
@@ -88,10 +89,21 @@ export function Hero() {
           </a>
         </div>
 
-        <p className="mt-10 text-[14px] text-muted md:text-[15px]">
-          500+ CAD designs <span aria-hidden="true">&nbsp;•&nbsp;</span> 100+ makers{" "}
-          <span aria-hidden="true">&nbsp;•&nbsp;</span> Early access
-        </p>
+        <ul className="mt-8 flex flex-wrap justify-center gap-2 text-[13px] sm:gap-x-3 sm:gap-y-1 sm:text-[14px] text-muted sm:mt-10 sm:justify-start md:text-[15px]">
+          {["500+ CAD designs", "100+ makers", "Early access"].map((stat, i) => (
+            <li
+              key={stat}
+              className="flex items-center gap-3 rounded-full border border-white/10 px-3 py-1 whitespace-nowrap sm:rounded-none sm:border-0 sm:p-0"
+            >
+              {i > 0 && (
+                <span aria-hidden="true" className="hidden sm:inline">
+                  •
+                </span>
+              )}
+              {stat}
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );

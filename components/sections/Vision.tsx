@@ -6,7 +6,7 @@ export function Vision() {
   return (
     <section
       aria-label="Our vision"
-      className="relative isolate flex min-h-[380px] items-center overflow-hidden border-t border-white/5 bg-ink py-14 lg:min-h-[300px]"
+      className="relative isolate flex min-h-[540px] items-end overflow-hidden border-t border-white/5 bg-ink pt-14 pb-12 sm:min-h-[460px] md:min-h-[380px] md:items-center md:py-14 lg:min-h-[300px]"
     >
       <Image
         src={art}
@@ -14,9 +14,10 @@ export function Vision() {
         fill
         placeholder="blur"
         sizes="100vw"
-        className="-z-20 object-cover object-[72%_center]"
+        className="-z-20 object-cover object-[64%_center] md:object-[72%_center]"
       />
-      <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(2,6,10,0.92)_0%,rgba(2,6,10,0.75)_40%,rgba(2,6,10,0.1)_70%)]" />
+      {/* Phones: fade up from the bottom so the art stays visible above the copy. */}
+      <div className="absolute inset-0 -z-10 bg-[linear-gradient(0deg,#02060a_0%,rgba(2,6,10,0.85)_38%,rgba(2,6,10,0.15)_70%)] md:bg-[linear-gradient(90deg,rgba(2,6,10,0.92)_0%,rgba(2,6,10,0.75)_40%,rgba(2,6,10,0.1)_70%)]" />
 
       <div className={`${container} flex items-center justify-between gap-10`}>
         <div>
@@ -35,7 +36,7 @@ export function Vision() {
 
         <p
           aria-hidden="true"
-          className="hidden shrink-0 -rotate-[14deg] -skew-x-[8deg] font-hand text-[28px] leading-[1.15] font-bold text-white uppercase [text-shadow:0_2px_12px_rgba(0,0,0,0.6)] md:block"
+          className="absolute top-10 right-5 shrink-0 -rotate-[14deg] -skew-x-[8deg] font-hand text-[22px] leading-[1.15] font-bold text-white uppercase [text-shadow:0_2px_12px_rgba(0,0,0,0.7)] sm:right-10 md:static md:text-[28px]"
         >
           More
           <br />

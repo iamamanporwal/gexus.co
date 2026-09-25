@@ -26,12 +26,17 @@ export function SplitSection({
 }) {
   return (
     <section id={id} aria-label={label} className={`border-t border-white/5 bg-ink py-14 md:py-16 lg:py-20 ${className}`}>
-      <div className={`${container} grid gap-10 lg:grid-cols-[300px_minmax(0,1fr)] lg:gap-14 xl:grid-cols-[330px_minmax(0,1fr)]`}>
-        <div className={asideClassName}>
+      {/*
+        The title column only splits off at xl. Below that it would eat a third
+        of a tablet or small laptop and crush the content next to it, so the
+        title stacks on top and the content gets the full width.
+      */}
+      <div className={`${container} grid gap-8 md:gap-10 xl:grid-cols-[300px_minmax(0,1fr)] xl:gap-14 2xl:grid-cols-[330px_minmax(0,1fr)]`}>
+        <div className={`md:flex md:items-end md:justify-between md:gap-10 xl:block ${asideClassName}`}>
           <h2 className="section-title">
             <span className="squeeze">{title}</span>
           </h2>
-          <p className="section-lede mt-5 max-w-sm">{lede}</p>
+          <p className="section-lede mt-4 max-w-sm md:mt-0 md:pb-1 xl:mt-5 xl:pb-0">{lede}</p>
         </div>
         <div className="min-w-0">{children}</div>
       </div>
