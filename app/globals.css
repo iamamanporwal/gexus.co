@@ -103,6 +103,24 @@
     color: transparent;
   }
 
+  /* Feathers the hero product shot into the page. See Hero.tsx. */
+  .hero-art {
+    -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent);
+    mask-image: linear-gradient(to bottom, #000 78%, transparent);
+  }
+  @media (min-width: 1024px) {
+    .hero-art {
+      -webkit-mask-image:
+        linear-gradient(to right, transparent 0%, #000 22%),
+        linear-gradient(to bottom, transparent 0%, #000 12%, #000 84%, transparent 100%);
+      -webkit-mask-composite: source-in;
+      mask-image:
+        linear-gradient(to right, transparent 0%, #000 22%),
+        linear-gradient(to bottom, transparent 0%, #000 12%, #000 84%, transparent 100%);
+      mask-composite: intersect;
+    }
+  }
+
   /* Hides the default disclosure triangle on the mobile menu. */
   .menu > summary {
     list-style: none;

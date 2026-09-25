@@ -1,8 +1,9 @@
-import Image from "next/image";
+import { getImageProps } from "next/image";
 import { ButtonLink } from "@/components/Button";
 import { DescribeIcon, ExportIcon, RefineIcon, StepArrow } from "@/components/icons";
 import { links } from "@/lib/site";
 import hero from "@/public/images/hero.jpg";
+import heroMobile from "@/public/images/hero-mobile.jpg";
 import { container } from "./layout";
 
 const steps = [
@@ -11,36 +12,38 @@ const steps = [
   { label: "Export", Icon: ExportIcon },
 ];
 
+const heroAlt =
+  "The GEXUS AI CAD app on a laptop and phone, designing a parametric FPV drone chassis with adjustable dimensions and one-click STL export";
+
 export function Hero() {
   const demo = links.demo;
+
+  // The LCP image: loaded eagerly at high priority, one <picture> for both crops.
+  const common = { alt: heroAlt, loading: "eager", fetchPriority: "high" } as const;
+  const {
+    props: { srcSet: desktopSrcSet },
+  } = getImageProps({ ...common, src: hero, sizes: "min(84vw, 1600px)" });
+  const { props: mobileImg } = getImageProps({ ...common, src: heroMobile, sizes: "100vw" });
 
   return (
     <section
       id="top"
       aria-label="Hero"
-      className="relative isolate flex flex-col overflow-hidden bg-ink pt-24 lg:min-h-[min(900px,100svh)] lg:flex-row lg:items-center lg:pt-16"
+      className="relative isolate flex flex-col overflow-hidden bg-ink pt-24 lg:min-h-[min(820px,100svh)] lg:flex-row lg:items-center lg:pt-16"
     >
       {/*
-        Mobile: the illustration sits below the copy. Desktop: it fills the
-        section and the copy sits over the dark left side, as in the design.
+        Art-directed: phones and tablets get a tight crop of the laptop and
+        phone below the copy; from lg the full product shot sits to the right
+        of the headline, sized so the laptop screen always clears the text.
+        The mask feathers its edges into the page, since the render's black
+        is not quite the page's ink.
       */}
-      <div className="relative order-last mt-12 aspect-[4/3] w-full sm:aspect-[16/9] lg:absolute lg:inset-0 lg:-z-10 lg:mt-0 lg:aspect-auto">
-        <Image
-          src={hero}
-          alt="A builder in a GEXUS jacket in his workshop, with the GEXUS CAD app open on a laptop and phone showing a 3D motor bracket"
-          fill
-          preload
-          placeholder="blur"
-          sizes="100vw"
-          className="object-cover object-[78%_center] lg:object-right"
-        />
-        {/* Hides the baked-in ghost copy on the left of the source artwork. */}
-        {/* Narrow laptops push the art under the copy, so the fade runs further there. */}
-        <div className="absolute inset-0 hidden bg-[linear-gradient(90deg,#02060a_0%,#02060a_34%,rgba(2,6,10,0.88)_46%,rgba(2,6,10,0)_66%)] lg:block 2xl:bg-[linear-gradient(90deg,#02060a_0%,#02060a_30%,rgba(2,6,10,0.85)_40%,rgba(2,6,10,0)_58%)]" />
-        {/* Below desktop the whole artwork shows; fade its left edge, where the source has blurred placeholder avatars. */}
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,#02060a_0%,#02060a_14%,rgba(2,6,10,0)_42%)] lg:hidden" />
-        <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-ink to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-ink to-transparent" />
+      <div className="hero-art relative order-last mt-10 aspect-[1402/779] w-full lg:absolute lg:top-1/2 lg:right-0 lg:-z-10 lg:mt-0 lg:aspect-[1942/809] lg:w-[84vw] lg:max-w-[1600px] lg:-translate-y-1/2">
+        <picture>
+          <source media="(min-width: 1024px)" srcSet={desktopSrcSet} sizes="min(84vw, 1600px)" />
+          {/* eslint-disable-next-line jsx-a11y/alt-text -- alt comes from getImageProps */}
+          <img {...mobileImg} className="absolute inset-0 h-full w-full object-cover" />
+        </picture>
       </div>
 
       <div className={`${container} relative`}>
@@ -54,7 +57,7 @@ export function Hero() {
           <span className="text-[1.1em] text-[#4595fd]">3 clicks.</span>
         </h1>
 
-        <p className="mt-6 max-w-[34rem] text-[17px] leading-[1.45] text-body md:text-[19.75px]">
+        <p className="mt-6 max-w-[34rem] text-[17px] lg:max-w-[26rem] xl:max-w-[30rem] 2xl:max-w-[34rem] leading-[1.45] text-body md:text-[19.75px]">
           Turn your ideas, sketches or images into manufacturing-ready 3D
           models, in your browser.
         </p>

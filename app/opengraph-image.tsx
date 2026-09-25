@@ -8,29 +8,30 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 /**
- * The share card reuses the hero artwork, so links posted anywhere look like
- * the page they open. Rendered once at build time.
+ * The share card reuses the hero product shot, so links posted anywhere look like
+ * the page they open. Rendered once at build time. The background is pure
+ * black, not the page ink, to match the render so its edges never show.
  */
 export default async function OpengraphImage() {
-  const hero = await readFile(join(process.cwd(), "public/images/hero.jpg"));
+  const hero = await readFile(join(process.cwd(), "public/images/hero-mobile.jpg"));
   const heroSrc = `data:image/jpeg;base64,${hero.toString("base64")}`;
 
   return new ImageResponse(
     (
-      <div style={{ width: "100%", height: "100%", display: "flex", position: "relative", background: "#02060a" }}>
+      <div style={{ width: "100%", height: "100%", display: "flex", position: "relative", background: "#000000" }}>
         <img
           src={heroSrc}
           alt=""
-          width={1066}
-          height={630}
-          style={{ position: "absolute", right: 0, top: 0, width: 1066, height: 630, objectFit: "cover" }}
+          width={720}
+          height={400}
+          style={{ position: "absolute", right: 0, top: 150, width: 720, height: 400 }}
         />
         <div
           style={{
             position: "absolute",
             inset: 0,
             display: "flex",
-            background: "linear-gradient(90deg, #02060a 0%, #02060a 38%, rgba(2,6,10,0.7) 52%, rgba(2,6,10,0) 70%)",
+            background: "linear-gradient(90deg, #000000 0%, #000000 42%, rgba(0,0,0,0) 56%), linear-gradient(180deg, #000000 0%, #000000 24%, rgba(0,0,0,0) 34%, rgba(0,0,0,0) 76%, #000000 88%)",
           }}
         />
         <div style={{ position: "relative", display: "flex", flexDirection: "column", padding: "72px 64px", justifyContent: "space-between", height: "100%" }}>
