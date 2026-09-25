@@ -4,6 +4,9 @@
  * Design tokens, lifted from the GEXUS landing page design file.
  * Font variables are set on <html> by next/font in app/layout.tsx.
  */
+/* Landscape desktop: wide enough and wider than tall. Used by the hero. */
+@custom-variant desk (@media (min-width: 1024px) and (min-aspect-ratio: 11/10));
+
 @theme inline {
   --color-ink: #02060a;
   --color-panel: #070b10;
@@ -103,12 +106,17 @@
     color: transparent;
   }
 
+  /* Hero step tile size on desktop: shrinks on short screens. */
+  #top {
+    --step: clamp(52px, 8.6svh, 92px);
+  }
+
   /* Feathers the hero product shot into the page. See Hero.tsx. */
   .hero-art {
     -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent);
     mask-image: linear-gradient(to bottom, #000 78%, transparent);
   }
-  @media (min-width: 1024px) {
+  @media (min-width: 1024px) and (min-aspect-ratio: 11/10) {
     .hero-art {
       -webkit-mask-image:
         linear-gradient(to right, transparent 0%, #000 22%),
