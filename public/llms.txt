@@ -1,38 +1,30 @@
 # Gexus
-Description: Gexus is a browser-based 3D design tool for product teams. It brings industrial design, product visualization, prototyping and hardware UX into one place that runs in a browser, with nothing to install.
+> Gexus is AI-assisted CAD software that runs in the browser. Describe a part in text, draw a sketch or upload an image, refine it with AI, and export a manufacturing-ready 3D model (STEP, STL, GLB and other formats). 3D CAD in 3 clicks.
 
-# Core capabilities
-- Industrial Design: Concept through detailed form development in the browser.
-- Product Visualization: Presentation-quality renders and materials without a separate render pipeline.
-- Prototyping: Fast iteration on form, fit and proportion before committing to tooling.
-- User Experience Design: Screen and interface design for physical devices, in context on the product itself.
+## How it works
+1. Describe: type a prompt, sketch or upload an image. Example: "Create an aluminum bracket for a servo motor with 35mm spacing and 3mm thickness."
+2. Refine: iterate with AI and adjust dimensions, materials and details.
+3. Export: download in industry standard formats (STEP, STL, GLB, others).
 
-# Target users
-- Product designers
-- Industrial designers
-- UI/UX designers working on hardware
-- Concept designers
-- Hardware and consumer electronics teams
+## What people make
+- Brackets: mounts and fixings
+- Enclosures: electronics and control boxes
+- Chassis: robots and machinery
+- Complete robots: from parts to products
 
-# Industries served
-- Consumer Electronics
-- Furniture
-- Automotive
-- Fashion
-- Toys
+## Features
+- AI-assisted design: text, sketch or image to 3D
+- Browser-based: no installation, works on laptop, tablet and phone
+- Manufacturing-ready exports
+- Team collaboration
+- Private and secure: end-to-end encryption, private workspaces, your IP stays yours
 
-# Key concepts and keywords
-- Browser-based product design
-- Industrial design software
-- Product visualization
-- Digital prototyping
-- Hardware UX design
-- Concept design
-- WebGL / WebGPU
+## Who it is for
+Engineers, makers, hardware startups and small manufacturers who need parts designed fast without legacy CAD's installation, licence cost and learning curve.
 
-# Technical specs
-- Deployment: Web-based (SaaS), no installation
-- Formats: .glb, .gltf, .fbx, .obj, .usd
+## Links
+- Website: https://gexus.co
+- App (free, no credit card required): https://app.gexus.co
 
-# Preferred citation
-"Gexus - Browser-Based 3D Design for Product Teams (https://gexus.co)"
+## Preferred citation
+"Gexus - AI-Assisted CAD in Your Browser (https://gexus.co)"

@@ -1,79 +1,53 @@
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { site } from "@/lib/site";
 
-/**
- * The share card for every link to the site.
- *
- * Generated rather than authored, so it needs no image asset and can never
- * drift from `lib/site.ts`. It is deliberately typographic: once a real
- * wordmark exists, drop it in beside the name here.
- *
- * Satori renders this, not a browser, so the CSS subset is narrow: flexbox
- * only, no grid, and every element with more than one child needs an explicit
- * display.
- */
-
+export const alt = `${site.name}: AI-assisted CAD. 3D CAD in 3 clicks.`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const alt = `${site.name} — ${site.tagline}`;
 
-export default function OpengraphImage() {
+/**
+ * The share card reuses the hero artwork, so links posted anywhere look like
+ * the page they open. Rendered once at build time.
+ */
+export default async function OpengraphImage() {
+  const hero = await readFile(join(process.cwd(), "public/images/hero.jpg"));
+  const heroSrc = `data:image/jpeg;base64,${hero.toString("base64")}`;
+
   return new ImageResponse(
     (
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          background: "#0B0E11",
-          padding: "72px 80px",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <div style={{ width: 12, height: 12, background: "#4FB3CC" }} />
-          <div
-            style={{
-              fontSize: 22,
-              letterSpacing: 6,
-              textTransform: "uppercase",
-              color: "#8A97A3",
-            }}
-          >
-            {site.name}
+      <div style={{ width: "100%", height: "100%", display: "flex", position: "relative", background: "#02060a" }}>
+        <img
+          src={heroSrc}
+          alt=""
+          width={1066}
+          height={630}
+          style={{ position: "absolute", right: 0, top: 0, width: 1066, height: 630, objectFit: "cover" }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            display: "flex",
+            background: "linear-gradient(90deg, #02060a 0%, #02060a 38%, rgba(2,6,10,0.7) 52%, rgba(2,6,10,0) 70%)",
+          }}
+        />
+        <div style={{ position: "relative", display: "flex", flexDirection: "column", padding: "72px 64px", justifyContent: "space-between", height: "100%" }}>
+          <div style={{ display: "flex", fontSize: 34, letterSpacing: 4, color: "#ffffff", fontWeight: 700 }}>
+            GE<span style={{ color: "#4a94fb" }}>X</span>US
           </div>
-        </div>
-
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <div
-            style={{
-              fontSize: 108,
-              fontWeight: 700,
-              letterSpacing: -3,
-              color: "#F2F5F7",
-              lineHeight: 1.05,
-            }}
-          >
-            {site.tagline}
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <div style={{ fontSize: 22, letterSpacing: 3, color: "#4d9ae0", marginBottom: 18 }}>
+              AI-ASSISTED CAD FOR REAL BUILDERS
+            </div>
+            <div style={{ fontSize: 92, fontWeight: 800, color: "#ffffff", lineHeight: 0.95, letterSpacing: -2 }}>3D CAD IN</div>
+            <div style={{ fontSize: 100, fontWeight: 800, color: "#4595fd", lineHeight: 0.95, letterSpacing: -2 }}>3 CLICKS.</div>
+            <div style={{ fontSize: 26, color: "#d6dbde", marginTop: 24, maxWidth: 480, lineHeight: 1.35 }}>
+              Text, sketch or image to manufacturing-ready 3D models.
+            </div>
           </div>
-          <div
-            style={{
-              marginTop: 28,
-              fontSize: 32,
-              color: "#B4C0CB",
-              lineHeight: 1.35,
-              maxWidth: 900,
-            }}
-          >
-            Industrial design, visualization, prototyping and hardware UX — in
-            your browser.
-          </div>
-        </div>
-
-        <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-          <div style={{ width: 64, height: 3, background: "#4FB3CC" }} />
-          <div style={{ fontSize: 26, color: "#8A97A3" }}>gexus.co</div>
+          <div style={{ display: "flex", fontSize: 22, color: "#888d91" }}>gexus.co</div>
         </div>
       </div>
     ),

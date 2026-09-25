@@ -1,35 +1,68 @@
-import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import {
+  Barlow_Condensed,
+  Caveat,
+  Caveat_Brush,
+  Inter,
+  Michroma,
+} from "next/font/google";
 import Script from "next/script";
 import { site } from "@/lib/site";
 import "./globals.css";
 
+// Self-hosted by next/font: no request to Google at runtime, no layout shift.
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-sans",
+  variable: "--font-inter",
   display: "swap",
 });
 
-const jetbrainsMono = JetBrains_Mono({
+const barlow = Barlow_Condensed({
   subsets: ["latin"],
-  variable: "--font-mono",
+  weight: ["600", "700", "800"],
+  variable: "--font-barlow",
   display: "swap",
 });
 
-const title = `${site.name} - ${site.tagline}`;
+const caveat = Caveat({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-caveat",
+  display: "swap",
+});
+
+const caveatBrush = Caveat_Brush({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-caveat-brush",
+  display: "swap",
+});
+
+const michroma = Michroma({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-michroma",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
-  // Without metadataBase, every OG and Twitter image URL resolves relative and
-  // Next warns at build time.
+  // Without metadataBase, every OG and Twitter image URL resolves relative.
   metadataBase: new URL(site.url),
-  title,
+  title: {
+    default: site.title,
+    template: `%s | ${site.name}`,
+  },
   description: site.description,
   keywords: [...site.keywords],
   applicationName: site.name,
+  authors: [{ name: site.name, url: site.url }],
+  creator: site.name,
+  publisher: site.name,
+  category: "technology",
   // The one signal that stops gexus.co and gexus.in splitting the same page.
   alternates: { canonical: "/" },
   openGraph: {
-    title,
+    title: site.title,
     description: site.description,
     type: "website",
     url: "/",
@@ -38,10 +71,26 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title,
+    title: site.title,
     description: site.description,
   },
-  robots: { index: true, follow: true },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  formatDetection: { telephone: false, email: false, address: false },
+};
+
+export const viewport: Viewport = {
+  themeColor: site.themeColor,
+  colorScheme: "dark",
 };
 
 export default function RootLayout({
@@ -50,15 +99,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${inter.variable} ${jetbrainsMono.variable} antialiased font-sans`}
-        suppressHydrationWarning
-      >
+    <html
+      lang="en"
+      className={`${inter.variable} ${barlow.variable} ${caveat.variable} ${caveatBrush.variable} ${michroma.variable}`}
+    >
+      <body className="font-sans antialiased">
         {site.analyticsId && (
           <>
             <Script
-              async
               src={`https://www.googletagmanager.com/gtag/js?id=${site.analyticsId}`}
               strategy="afterInteractive"
             />
@@ -67,7 +115,6 @@ export default function RootLayout({
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
-
                 gtag('config', '${site.analyticsId}');
               `}
             </Script>

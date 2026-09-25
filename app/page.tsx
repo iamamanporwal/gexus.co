@@ -1,29 +1,38 @@
-"use client";
+import { SiteFooter } from "@/components/SiteFooter";
+import { SiteHeader } from "@/components/SiteHeader";
+import { StructuredData } from "@/components/StructuredData";
+import { Comparison } from "@/components/sections/Comparison";
+import { Features } from "@/components/sections/Features";
+import { FinalCta } from "@/components/sections/FinalCta";
+import { Hero } from "@/components/sections/Hero";
+import { HowItWorks } from "@/components/sections/HowItWorks";
+import { IdeaToPart } from "@/components/sections/IdeaToPart";
+import { OldWay } from "@/components/sections/OldWay";
+import { Problem } from "@/components/sections/Problem";
+import { Security } from "@/components/sections/Security";
+import { UseCases } from "@/components/sections/UseCases";
+import { Vision } from "@/components/sections/Vision";
 
-import React from 'react';
-import Navigation from '@/components/Navigation';
-import ContentPanel from '@/components/ContentPanel';
-import BackgroundManager from '@/components/BackgroundManager';
-
-// import { useAppStore } from '@/lib/store';
-
+/** Fully static: rendered once at build time, no client JavaScript of its own. */
 export default function Home() {
-
-
   return (
-    <main className="w-full relative bg-black">
-
-      <Navigation />
-
-      {/* Fixed Background Layer */}
-      <div className="fixed inset-0 w-full h-full z-0 pointer-events-none">
-        <BackgroundManager />
-      </div>
-
-      {/* Scrollable Content Layer */}
-      <div className="fixed inset-0 w-full h-[100dvh] overflow-y-auto md:snap-y md:snap-mandatory z-30">
-        <ContentPanel />
-      </div>
-    </main>
+    <>
+      <StructuredData />
+      <SiteHeader />
+      <main>
+        <Hero />
+        <Problem />
+        <OldWay />
+        <Security />
+        <IdeaToPart />
+        <HowItWorks />
+        <UseCases />
+        <Features />
+        <Comparison />
+        <Vision />
+        <FinalCta />
+      </main>
+      <SiteFooter />
+    </>
   );
 }

@@ -1,186 +1,129 @@
 @import "tailwindcss";
 
+/*
+ * Design tokens, lifted from the GEXUS landing page design file.
+ * Font variables are set on <html> by next/font in app/layout.tsx.
+ */
+@theme inline {
+  --color-ink: #02060a;
+  --color-panel: #070b10;
+  --color-line: #2e333a;
+  --color-brand: #4a94fb;
+  --color-brand-strong: #4f99fb;
+  --color-eyebrow: #4d9ae0;
+  --color-body: #d6dbde;
+  --color-soft: #a2a7ab;
+  --color-muted: #888d91;
+
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-barlow), "Arial Narrow", sans-serif;
+  --font-hand: var(--font-caveat), cursive;
+  --font-brush: var(--font-caveat-brush), cursive;
+  --font-logo: var(--font-michroma), sans-serif;
+}
+
 @layer base {
-  :root {
-    --font-sans: 'Inter', sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
+  html {
+    scroll-behavior: smooth;
+    /* Keeps anchor targets clear of the fixed header. */
+    scroll-padding-top: 5rem;
+    background-color: var(--color-ink);
+    color-scheme: dark;
   }
 
-  html,
   body {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #050505;
+    background-color: var(--color-ink);
     color: #ffffff;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Custom Scrollbar */
-  ::-webkit-scrollbar {
-    width: 6px;
+  ::selection {
+    background: var(--color-brand);
+    color: var(--color-ink);
   }
 
-  ::-webkit-scrollbar-track {
-    background: #0a0a0a;
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 3px;
+    border-radius: 4px;
   }
 
-  ::-webkit-scrollbar-thumb {
-    background: #333;
-    border-radius: 3px;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: #555;
-  }
-
-  canvas {
-    outline: none;
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation: none !important;
+      transition: none !important;
+    }
   }
 }
 
-@layer utilities {
-  .bg-noise {
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+@layer components {
+  /*
+   * The design squeezes Barlow Condensed further with scaleX(~0.8). A
+   * transform does not reflow, so the element is inline-block and the heading
+   * keeps its full box; only the glyphs narrow.
+   */
+  .squeeze {
+    display: inline-block;
+    transform: scaleX(0.82);
+    transform-origin: 0 50%;
   }
 
-  /* Animations */
-  @keyframes shine {
-    0% {
-      transform: translateX(-100%);
-    }
-
-    100% {
-      transform: translateX(100%);
-    }
+  .section-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    line-height: 0.82;
+    font-size: clamp(3rem, 5.4vw, 5rem);
   }
 
-  @keyframes fadeIn {
-    0% {
+  .section-lede {
+    color: var(--color-body);
+    font-size: clamp(1.0625rem, 1.3vw, 1.25rem);
+    line-height: 1.4;
+  }
+
+  .logo-x {
+    background: linear-gradient(
+      135deg,
+      #ffffff 0%,
+      #ffffff 44%,
+      var(--color-brand) 45%,
+      var(--color-brand) 58%,
+      #ffffff 59%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Hides the default disclosure triangle on the mobile menu. */
+  .menu > summary {
+    list-style: none;
+  }
+  .menu > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .caret {
+    display: inline-block;
+    width: 2px;
+    height: 1.1em;
+    margin-left: 2px;
+    vertical-align: -0.2em;
+    background: var(--color-brand);
+    animation: blink 1.1s steps(1) infinite;
+  }
+
+  @keyframes blink {
+    50% {
       opacity: 0;
     }
-
-    100% {
-      opacity: 1;
-    }
-  }
-
-  @keyframes usecaseLines {
-    0% {
-      background-position: 0 0;
-    }
-
-    100% {
-      background-position: 0 240px;
-    }
-  }
-
-  @keyframes borderFlow {
-    0% {
-      background-position: 0% 50%;
-    }
-
-    50% {
-      background-position: 100% 50%;
-    }
-
-    100% {
-      background-position: 0% 50%;
-    }
-  }
-
-  @keyframes borderSpin {
-    from {
-      transform: rotate(0deg);
-    }
-
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-  @keyframes borderShimmer {
-    0% {
-      background-position: -200% 0;
-    }
-
-    100% {
-      background-position: 200% 0;
-    }
-  }
-
-  @keyframes borderGlow {
-
-    0%,
-    100% {
-      opacity: 0.6;
-      filter: blur(2px);
-    }
-
-    50% {
-      opacity: 1;
-      filter: blur(4px);
-    }
-  }
-
-  .animate-border-spin {
-    animation: borderSpin 2s linear infinite;
-    will-change: transform;
-    transform: translateZ(0);
-  }
-
-  .animate-border-spin-smooth {
-    animation: borderSpin 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-    will-change: transform;
-    transform: translateZ(0);
-  }
-
-  .animate-border-spin-reverse {
-    animation: borderSpin 6s cubic-bezier(0.4, 0, 0.2, 1) infinite reverse;
-    will-change: transform;
-    transform: translateZ(0);
-  }
-
-  .animate-border-shimmer {
-    animation: borderShimmer 2s linear infinite;
-    background-size: 200% 100%;
-    will-change: background-position;
-  }
-
-  .animate-border-glow {
-    animation: borderGlow 2s ease-in-out infinite;
-    will-change: opacity, filter;
-  }
-
-  .animate-border-flow {
-    animation: borderFlow 3s ease infinite;
-    will-change: background-position;
-  }
-
-  .animate-shine {
-    animation: shine 3s infinite linear;
-    will-change: transform;
-  }
-
-  .shine-button {
-    background: linear-gradient(90deg,
-        rgba(255, 255, 255, 0.05) 0%,
-        rgba(255, 255, 255, 0.1) 50%,
-        rgba(255, 255, 255, 0.05) 100%);
-  }
-
-  .usecase-lines {
-    background-image:
-      repeating-linear-gradient(120deg,
-        rgba(120, 170, 255, 0.14) 0,
-        rgba(120, 170, 255, 0.14) 1px,
-        transparent 1px,
-        transparent 24px);
-    background-size: 200% 200%;
-    opacity: 0.2;
-    animation: usecaseLines 14s linear infinite;
   }
 }
