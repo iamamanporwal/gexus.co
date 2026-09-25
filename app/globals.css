@@ -111,20 +111,24 @@
     --step: clamp(52px, 8.6svh, 92px);
   }
 
-  /* Feathers the hero product shot into the page. See Hero.tsx. */
+  /*
+   * Feathers the hero product shot into the page. See Hero.tsx. The render's
+   * orange backdrop runs off its top and right edges, so those fade too;
+   * otherwise they show as hard lines on phones and on screens past 2000px.
+   */
   .hero-art {
-    -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent);
-    mask-image: linear-gradient(to bottom, #000 78%, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 78%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 78%, transparent 100%);
   }
   @media (min-width: 1024px) and (min-aspect-ratio: 11/10) {
     .hero-art {
       -webkit-mask-image:
-        linear-gradient(to right, transparent 0%, #000 22%),
-        linear-gradient(to bottom, transparent 0%, #000 12%, #000 84%, transparent 100%);
+        linear-gradient(to right, transparent 0%, #000 22%, #000 94%, transparent 100%),
+        linear-gradient(to bottom, transparent 0%, #000 14%, #000 84%, transparent 100%);
       -webkit-mask-composite: source-in;
       mask-image:
-        linear-gradient(to right, transparent 0%, #000 22%),
-        linear-gradient(to bottom, transparent 0%, #000 12%, #000 84%, transparent 100%);
+        linear-gradient(to right, transparent 0%, #000 22%, #000 94%, transparent 100%),
+        linear-gradient(to bottom, transparent 0%, #000 14%, #000 84%, transparent 100%);
       mask-composite: intersect;
     }
   }

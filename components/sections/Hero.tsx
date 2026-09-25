@@ -52,7 +52,7 @@ export function Hero() {
         its edges into the page, since the render's black is not quite the
         page's ink.
       */}
-      <div className="hero-art relative order-last mt-auto aspect-[1402/779] w-full desk:absolute desk:top-[calc(50%+2rem)] desk:right-[max(0px,calc((100vw-2000px)/2))] desk:-z-10 desk:mt-0 desk:aspect-[1942/809] desk:w-[min(84vw,1600px,calc((100svh-4rem)*2.2))] desk:-translate-y-1/2">
+      <div className="hero-art relative order-last mt-auto aspect-[1404/779] w-full desk:absolute desk:top-[calc(50%+2rem)] desk:right-[max(0px,calc((100vw-2000px)/2))] desk:-z-10 desk:mt-0 desk:aspect-[1944/809] desk:w-[min(84vw,1600px,calc((100svh-4rem)*2.2))] desk:-translate-y-1/2">
         <picture>
           <source media={DESK_MEDIA} srcSet={desktopSrcSet} sizes="min(84vw, 1600px)" />
           {/* eslint-disable-next-line jsx-a11y/alt-text -- alt comes from getImageProps */}
