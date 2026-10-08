@@ -7,6 +7,7 @@ import {
   Michroma,
 } from "next/font/google";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -121,6 +122,7 @@ export default function RootLayout({
           </>
         )}
         {children}
+        <Analytics />
       </body>
     </html>
   );
